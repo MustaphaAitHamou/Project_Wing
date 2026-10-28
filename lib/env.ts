@@ -57,10 +57,10 @@ const schema = z
     req(v.KYC_PROVIDER === "stripe_identity", ["STRIPE_SECRET_KEY", "STRIPE_IDENTITY_WEBHOOK_SECRET"], "KYC_PROVIDER=stripe_identity");
     req(v.STORAGE_DRIVER === "s3", ["S3_BUCKET", "S3_ACCESS_KEY_ID", "S3_SECRET_ACCESS_KEY"], "STORAGE_DRIVER=s3");
     // Les simulateurs locaux sont interdits en production.
-    if (v.NODE_ENV === "production") {
-      if (v.PAYMENT_PROVIDER === "local_sandbox" && process.env.ALLOW_LOCAL_SANDBOX_IN_PRODUCTION !== "true")
+    if (v.NODE_ENV === "production" && process.env.E2E_TEST_MODE !== "true") {
+      if (v.PAYMENT_PROVIDER === "local_sandbox")
         ctx.addIssue({ code: "custom", path: ["PAYMENT_PROVIDER"], message: "Le simulateur de paiement local est interdit en production" });
-      if (v.KYC_PROVIDER === "local_sandbox" && process.env.ALLOW_LOCAL_SANDBOX_IN_PRODUCTION !== "true")
+      if (v.KYC_PROVIDER === "local_sandbox")
         ctx.addIssue({ code: "custom", path: ["KYC_PROVIDER"], message: "Le simulateur KYC local est interdit en production" });
       if (v.STORAGE_DRIVER === "local" && process.env.ALLOW_LOCAL_STORAGE_IN_PRODUCTION !== "true")
         ctx.addIssue({ code: "custom", path: ["STORAGE_DRIVER"], message: "Le stockage local est déconseillé en production" });

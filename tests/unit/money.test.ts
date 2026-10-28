@@ -50,3 +50,20 @@ describe("saisie et format des montants", () => {
     expect(estimateTripPrice(999, 0, 1001)).toBe(1000);
   });
 });
+
+import { tripInputSchema } from "@/features/trips/schemas";
+describe("formulaire de trajet", () => {
+  const base = { originCityId: "a", destCityId: "b", departureDate: "2030-01-10", transportMode: "PLANE", capacityGrams: "10", pricePerKg: "8" };
+  it("accepte un prix minimum vide (facultatif) et le traite comme 0", () => {
+    const r = tripInputSchema.safeParse({ ...base, minPrice: "" });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.minPrice).toBe(0);
+  });
+  it("convertit le poids en grammes et les prix en centimes", () => {
+    const r = tripInputSchema.parse({ ...base, minPrice: "15,5", capacityVolumeL: "" });
+    expect(r).toMatchObject({ capacityGrams: 10000, pricePerKg: 800, minPrice: 1550 });
+  });
+  it("refuse une arrivée avant le départ", () => {
+    expect(tripInputSchema.safeParse({ ...base, arrivalDate: "2030-01-01" }).success).toBe(false);
+  });
+});

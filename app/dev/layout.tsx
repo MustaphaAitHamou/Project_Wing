@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 import { SiteHeader } from "@/components/layout/site-header";
+import { isTestMode } from "@/lib/test-mode";
 
 /** Outils de simulation : inaccessibles en production. */
 export default function DevLayout({ children }: { children: React.ReactNode }) {
-  if (process.env.NODE_ENV === "production" && process.env.ALLOW_LOCAL_SANDBOX_IN_PRODUCTION !== "true") notFound();
+  if (!isTestMode()) notFound();
   return (
     <>
       <SiteHeader />

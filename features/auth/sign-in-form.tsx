@@ -39,7 +39,7 @@ export function SignInForm({ next, googleEnabled }: { next: string; googleEnable
   });
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-4" noValidate>
+    <form method="post" onSubmit={onSubmit} className="grid gap-4" noValidate>
       {error && <Alert tone="danger">{error}</Alert>}
       {unverified && (
         <Alert tone="warning" title="Adresse email non confirmée">

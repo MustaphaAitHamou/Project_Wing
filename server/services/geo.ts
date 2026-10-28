@@ -3,6 +3,7 @@ import { db } from "@/server/db/client";
 import { normalizeSearch } from "@/lib/domain/text";
 import { invalid, unavailable } from "@/server/security/errors";
 import type { TransportMode } from "@/generated/prisma/client";
+import { isTestMode } from "@/lib/test-mode";
 
 export interface CityOption {
   id: string;
@@ -56,7 +57,7 @@ export async function listActiveCountries() {
  */
 export async function assertCorridorOpen(originCountry: string, destCountry: string, mode?: TransportMode) {
   const c = await db.corridor.findUnique({ where: { originCountry_destCountry: { originCountry, destCountry } } });
-  const allowTest = process.env.NODE_ENV !== "production" || process.env.ALLOW_TEST_CORRIDORS === "true";
+  const allowTest = isTestMode();
   if (!c || c.status === "DISABLED" || (c.status === "TEST_ONLY" && !allowTest))
     throw unavailable("Ce trajet entre ces deux pays n'est pas encore ouvert sur Tamurt Sending.");
   if (mode && c.allowedModes.length > 0 && !c.allowedModes.includes(mode))
@@ -65,6 +66,6 @@ export async function assertCorridorOpen(originCountry: string, destCountry: str
 }
 
 export async function getOpenCorridors() {
-  const allowTest = process.env.NODE_ENV !== "production" || process.env.ALLOW_TEST_CORRIDORS === "true";
+  const allowTest = isTestMode();
   return db.corridor.findMany({ where: { status: { in: allowTest ? ["LIVE", "TEST_ONLY"] : ["LIVE"] } }, include: { origin: true, destination: true } });
 }

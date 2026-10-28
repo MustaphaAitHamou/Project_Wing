@@ -5,6 +5,7 @@ import { APIError } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { twoFactor } from "better-auth/plugins/two-factor";
 import { env, isProd } from "@/lib/env";
+import { rateLimitsRelaxed } from "@/lib/test-mode";
 import { db } from "@/server/db/client";
 import { enqueue } from "@/server/jobs/queue";
 import { signUpServerSchema } from "@/features/auth/schemas";
@@ -59,7 +60,8 @@ export const auth = betterAuth({
     cookieCache: { enabled: false },
   },
   rateLimit: {
-    enabled: true,
+    // Désactivable uniquement en mode test (tests automatisés), jamais en production réelle.
+    enabled: !rateLimitsRelaxed(),
     storage: "database",
     window: 60,
     max: 100,

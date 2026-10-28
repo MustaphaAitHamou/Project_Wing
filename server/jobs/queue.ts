@@ -5,20 +5,17 @@ import { db, type Tx } from "@/server/db/client";
 
 export type JobType = "email.send" | "otp.issue" | "match.parcel" | "match.trip" | "payout.release" | "notification.email";
 
-let kicked = false;
 /**
  * Demande le traitement de la file juste après l'envoi de la réponse HTTP (transaction
  * déjà validée). Hors requête (tests, scripts), sans effet : le worker ou le cron prend le relais.
  */
 function kick() {
-  if (kicked) return;
   try {
+    // Plusieurs appels dans une même requête sont sans risque : SKIP LOCKED évite les doublons.
     after(async () => {
-      kicked = false;
       const { drainJobs } = await import("./runner");
       await drainJobs(50).catch(() => undefined);
     });
-    kicked = true;
   } catch {
     // Pas de contexte de requête.
   }

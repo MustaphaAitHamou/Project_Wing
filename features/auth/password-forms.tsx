@@ -17,6 +17,7 @@ export function ForgotPasswordForm() {
   if (sent) return <Alert tone="success" title="Demande enregistrée">Si un compte correspond à cette adresse, un email de réinitialisation vient d&apos;être envoyé.</Alert>;
   return (
     <form
+      method="post"
       noValidate
       className="grid gap-4"
       onSubmit={form.handleSubmit(async (v) => {
@@ -40,6 +41,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
   const form = useForm<z.infer<typeof resetPasswordSchema>>({ resolver: zodResolver(resetPasswordSchema), defaultValues: { password: "", confirmPassword: "" } });
   return (
     <form
+      method="post"
       noValidate
       className="grid gap-4"
       onSubmit={form.handleSubmit(async (v) => {

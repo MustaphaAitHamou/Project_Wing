@@ -4,7 +4,7 @@ import nextTs from "eslint-config-next/typescript";
 const config = [
   ...nextVitals,
   ...nextTs,
-  { ignores: [".next/**", "generated/**", "node_modules/**", "playwright-report/**", "test-results/**", "storage/**"] },
+  { ignores: [".next/**", ".next-e2e/**", "storage-e2e/**", "generated/**", "node_modules/**", "playwright-report/**", "test-results/**", "storage/**"] },
   {
     rules: {
       "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],

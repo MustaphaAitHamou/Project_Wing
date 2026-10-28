@@ -1,0 +1,2 @@
+CREATE DATABASE tamurt_test;
+CREATE DATABASE tamurt_e2e;

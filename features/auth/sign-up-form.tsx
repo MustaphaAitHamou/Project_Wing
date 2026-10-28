@@ -40,7 +40,7 @@ export function SignUpForm({ googleEnabled }: { googleEnabled: boolean }) {
   });
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-4" noValidate>
+    <form method="post" onSubmit={onSubmit} className="grid gap-4" noValidate>
       {error && <Alert tone="danger">{error}</Alert>}
       <div className="grid gap-4 sm:grid-cols-2">
         <Field id="firstName" label="Prénom" error={e.firstName?.message}><Input autoComplete="given-name" {...form.register("firstName")} /></Field>

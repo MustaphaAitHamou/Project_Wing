@@ -8,10 +8,10 @@ import { handleProviderEvent } from "@/server/payments/service";
 import { applyKycDecision } from "@/server/kyc";
 import { forbidden, notFound } from "@/server/security/errors";
 import { action } from "@/server/security/action";
-import { env } from "@/lib/env";
+import { isTestMode } from "@/lib/test-mode";
 
 function assertSandbox() {
-  if (env.NODE_ENV === "production" && process.env.ALLOW_LOCAL_SANDBOX_IN_PRODUCTION !== "true") throw forbidden("Simulateur désactivé.");
+  if (!isTestMode()) throw forbidden("Simulateur désactivé.");
 }
 
 /** Simule la page de paiement hébergée : produit l'événement que le prestataire enverrait par webhook. */

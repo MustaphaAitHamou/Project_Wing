@@ -11,7 +11,8 @@ export const tripInputSchema = z
     capacityGrams: kgInput("Poids disponible", 100),
     capacityVolumeL: z.union([z.coerce.number().min(1).max(2000), z.literal("").transform(() => undefined)]).optional(),
     pricePerKg: moneyInput("Prix par kg", { min: 100, max: 100_00 }),
-    minPrice: moneyInput("Prix minimum", { min: 0, max: 500_00 }).default(0),
+    // Champ facultatif : vide = pas de minimum.
+    minPrice: z.union([z.literal("").transform(() => 0), moneyInput("Prix minimum", { min: 0, max: 500_00 })]).default(0),
     currency: z.enum(SUPPORTED_CURRENCIES).default("EUR"),
     acceptsFragile: z.boolean().default(false),
     description: z.string().trim().max(2000).transform((s) => s || undefined).optional(),

@@ -1,12 +1,14 @@
 import "server-only";
 import { db } from "@/server/db/client";
 import { AppError } from "./errors";
+import { rateLimitsRelaxed } from "@/lib/test-mode";
 
 /**
  * Limiteur à fenêtre fixe stocké dans PostgreSQL : cohérent entre plusieurs
  * instances, sans dépendance supplémentaire. Upsert atomique.
  */
 export async function rateLimit(key: string, limit: number, windowSeconds: number): Promise<void> {
+  if (rateLimitsRelaxed()) limit *= 50;
   const windowMs = windowSeconds * 1000;
   const windowStart = new Date(Math.floor(Date.now() / windowMs) * windowMs);
   const rows = await db.$queryRaw<{ count: number }[]>`
