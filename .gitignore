@@ -5,7 +5,7 @@ generated/
 coverage/
 playwright-report/
 test-results/
-storage/
+/storage/
 *.tsbuildinfo
 next-env.d.ts
 .env
@@ -14,5 +14,5 @@ next-env.d.ts
 .env.test
 !.env.example
 .DS_Store
-storage-e2e/
+/storage-e2e/
 .next-e2e/
