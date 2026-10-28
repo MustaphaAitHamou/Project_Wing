@@ -1,0 +1,1089 @@
+// Tamurt Sending — schéma de données
+// Conventions :
+// - Montants en unités mineures (centimes) dans des Int : exacts, jamais de flottants.
+// - Poids en grammes, volumes en cm³, dimensions en cm (Int).
+// - Chaque montant est accompagné d'une devise ISO 4217 explicite.
+// - Les tables d'authentification (User, Session, Account, Verification, TwoFactor, RateLimit)
+//   suivent le format attendu par Better Auth.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────── Enums ───────────────────────────────
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum KycStatus {
+  UNVERIFIED
+  PENDING
+  VERIFIED
+  REJECTED
+  EXPIRED
+}
+
+enum CorridorStatus {
+  DISABLED // non disponible
+  TEST_ONLY // utilisable en environnement de test uniquement
+  LIVE // validé légalement et opérationnellement
+}
+
+enum TransportMode {
+  PLANE
+  CAR
+  FERRY
+  TRAIN
+  BUS
+  OTHER
+}
+
+enum TripStatus {
+  DRAFT
+  PUBLISHED
+  FULL
+  COMPLETED
+  CANCELLED
+  EXPIRED
+  SUSPENDED
+}
+
+enum ParcelStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  RESERVED
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+  EXPIRED
+  SUSPENDED
+}
+
+enum ProposalInitiator {
+  TRAVELER
+  SENDER
+}
+
+enum ProposalStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+  EXPIRED
+}
+
+enum BookingStatus {
+  PENDING
+  AWAITING_VERIFICATION
+  ACCEPTED
+  AWAITING_PAYMENT
+  PAID
+  READY_FOR_PICKUP
+  PICKED_UP
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  COMPLETED
+  CANCELLED
+  DISPUTED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  REQUIRES_PAYMENT
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum RefundStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+}
+
+enum PayoutStatus {
+  PENDING
+  BLOCKED
+  PROCESSING
+  PAID
+  FAILED
+  CANCELLED
+}
+
+enum CommissionStatus {
+  ESTIMATED
+  EARNED
+  REVERSED
+}
+
+enum VerificationPurpose {
+  PICKUP
+  DELIVERY
+}
+
+enum DeliveryEventType {
+  PARCEL_CREATED
+  TRAVELER_SELECTED
+  BOOKING_CONFIRMED
+  PAYMENT_CONFIRMED
+  PICKUP_CODE_SENT
+  PICKED_UP
+  IN_TRANSIT
+  ARRIVED
+  OUT_FOR_DELIVERY
+  DELIVERY_CODE_SENT
+  DELIVERED
+  COMPLETED
+  INCIDENT_REPORTED
+  CANCELLED
+  REFUNDED
+}
+
+enum NotificationType {
+  NEW_MESSAGE
+  NEW_PROPOSAL
+  PROPOSAL_ACCEPTED
+  PROPOSAL_REJECTED
+  MATCHING_TRIP
+  MATCHING_PARCEL
+  PAYMENT_RECEIVED
+  PAYMENT_FAILED
+  PARCEL_PICKED_UP
+  PARCEL_DELIVERED
+  DISPUTE_OPENED
+  DISPUTE_UPDATED
+  REVIEW_RECEIVED
+  VERIFICATION_APPROVED
+  VERIFICATION_REJECTED
+  BOOKING_UPDATED
+  SYSTEM
+}
+
+enum JobStatus {
+  PENDING
+  PROCESSING
+  DONE
+  FAILED
+}
+
+enum ReviewStatus {
+  VISIBLE
+  HIDDEN
+  FLAGGED
+}
+
+enum DisputeType {
+  LOST
+  DAMAGED
+  NOT_AS_DESCRIBED
+  TRAVELER_NO_SHOW
+  SENDER_NO_SHOW
+  RECIPIENT_UNAVAILABLE
+  DELAY
+  PAYMENT_CONTESTED
+  OTHER
+}
+
+enum DisputeStatus {
+  OPEN
+  UNDER_REVIEW
+  WAITING_FOR_INFORMATION
+  RESOLVED
+  CLOSED
+}
+
+enum DisputeResolution {
+  FULL_REFUND
+  PARTIAL_REFUND
+  RELEASE_PAYOUT
+  NO_ACTION
+}
+
+enum ReportTarget {
+  USER
+  PARCEL
+  TRIP
+  MESSAGE
+  REVIEW
+}
+
+enum ReportStatus {
+  OPEN
+  REVIEWED
+  DISMISSED
+}
+
+// ─────────────────────── Authentification (Better Auth) ───────────────────────
+
+model User {
+  id               String     @id
+  name             String
+  email            String     @unique
+  emailVerified    Boolean    @default(false)
+  image            String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  twoFactorEnabled Boolean?   @default(false)
+  firstName        String     @default("")
+  lastName         String     @default("")
+  phone            String?
+  countryCode      String?    @db.Char(2)
+  // Le rôle n'est jamais modifiable par l'utilisateur : il n'est pas déclaré
+  // comme champ éditable côté Better Auth et ne change que via l'admin (audité).
+  role             Role       @default(USER)
+  status           UserStatus @default(ACTIVE)
+  suspendedReason  String?
+  termsAcceptedAt  DateTime?
+  locale           String     @default("fr")
+
+  sessions       Session[]
+  accounts       Account[]
+  twoFactors     TwoFactor[]
+  profile        UserProfile?
+  identityChecks IdentityVerification[]
+  payoutAccounts PayoutAccount[]
+
+  trips           Trip[]
+  parcels         Parcel[]
+  proposals       Proposal[]     @relation("ProposalTraveler")
+  sentProposals   Proposal[]     @relation("ProposalAuthor")
+  bookingsSender  Booking[]      @relation("BookingSender")
+  bookingsTravel  Booking[]      @relation("BookingTraveler")
+  payouts         Payout[]
+  conversations   ConversationParticipant[]
+  messages        Message[]
+  notifications   Notification[]
+  reviewsWritten  Review[]       @relation("ReviewAuthor")
+  reviewsReceived Review[]       @relation("ReviewSubject")
+  disputesOpened  Dispute[]      @relation("DisputeOpener")
+  disputesAssigned Dispute[]     @relation("DisputeAssignee")
+  reportsMade     Report[]       @relation("ReportReporter")
+  blocksMade      UserBlock[]    @relation("Blocker")
+  blocksReceived  UserBlock[]    @relation("Blocked")
+  auditLogs       AuditLog[]
+
+  @@index([role])
+  @@index([status])
+  @@index([createdAt])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model TwoFactor {
+  id                      String    @id
+  secret                  String
+  backupCodes             String
+  userId                  String
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  verified                Boolean?  @default(true)
+  failedVerificationCount Int?      @default(0)
+  lockedUntil             DateTime?
+
+  @@index([userId])
+  @@map("twoFactor")
+}
+
+model RateLimit {
+  id          String @id
+  key         String @unique
+  count       Int
+  lastRequest BigInt
+
+  @@map("rateLimit")
+}
+
+// ─────────────────────────────── Profil & confiance ───────────────────────────────
+
+model UserProfile {
+  userId            String   @id
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio               String?  @db.VarChar(600)
+  city              String?  @db.VarChar(120)
+  avatarKey         String?
+  // Agrégats recalculés de manière transactionnelle à chaque avis/livraison.
+  ratingSum         Int      @default(0)
+  ratingCount       Int      @default(0)
+  deliveriesCount   Int      @default(0)
+  shipmentsCount    Int      @default(0)
+  kycStatus         KycStatus @default(UNVERIFIED)
+  notificationPrefs Json     @default("{}")
+  updatedAt         DateTime @updatedAt
+
+  @@map("user_profile")
+}
+
+model IdentityVerification {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider      String
+  // Référence de session chez le prestataire. Aucun scan de document n'est stocké ici.
+  providerRef   String?   @unique
+  status        KycStatus @default(PENDING)
+  failureReason String?
+  createdAt     DateTime  @default(now())
+  decidedAt     DateTime?
+  expiresAt     DateTime?
+
+  @@index([userId, createdAt])
+  @@map("identity_verification")
+}
+
+model UserBlock {
+  blockerId String
+  blockedId String
+  createdAt DateTime @default(now())
+  blocker   User     @relation("Blocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked   User     @relation("Blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  @@id([blockerId, blockedId])
+  @@map("user_block")
+}
+
+// ─────────────────────────────── Référentiels ───────────────────────────────
+
+model Country {
+  code            String   @id @db.Char(2)
+  name            String
+  currency        String   @db.Char(3)
+  phonePrefix     String
+  isActive        Boolean  @default(false)
+  // Versements aux transporteurs résidant dans ce pays : bloqués tant que le
+  // prestataire de paiement ne les a pas confirmés pour ce pays.
+  payoutsEnabled  Boolean  @default(false)
+  cities          City[]
+  corridorsFrom   Corridor[] @relation("CorridorOrigin")
+  corridorsTo     Corridor[] @relation("CorridorDestination")
+
+  @@map("country")
+}
+
+model City {
+  id           String   @id @default(cuid())
+  countryCode  String   @db.Char(2)
+  country      Country  @relation(fields: [countryCode], references: [code])
+  name         String
+  slug         String   @unique
+  // Variantes normalisées (sans accents, minuscules) : "bejaia", "bgayet", "bougie"…
+  searchNames  String[]
+  aliases      String[]
+  latitude     Float?
+  longitude    Float?
+  isPopular    Boolean  @default(false)
+
+  tripsFrom    Trip[]   @relation("TripOrigin")
+  tripsTo      Trip[]   @relation("TripDestination")
+  parcelsFrom  Parcel[] @relation("ParcelOrigin")
+  parcelsTo    Parcel[] @relation("ParcelDestination")
+
+  @@index([countryCode])
+  @@index([searchNames], type: Gin)
+  @@map("city")
+}
+
+model Corridor {
+  id                String          @id @default(cuid())
+  originCountry     String          @db.Char(2)
+  destCountry       String          @db.Char(2)
+  origin            Country         @relation("CorridorOrigin", fields: [originCountry], references: [code])
+  destination       Country         @relation("CorridorDestination", fields: [destCountry], references: [code])
+  status            CorridorStatus  @default(DISABLED)
+  allowedModes      TransportMode[]
+  maxWeightGrams    Int             @default(23000)
+  notes             String?
+  updatedAt         DateTime        @updatedAt
+
+  @@unique([originCountry, destCountry])
+  @@map("corridor")
+}
+
+model ParcelCategory {
+  id             String          @id @default(cuid())
+  slug           String          @unique
+  name           String
+  description    String?
+  isActive       Boolean         @default(true)
+  // Catégorie interdite : la publication est refusée côté serveur.
+  isProhibited   Boolean         @default(false)
+  // Catégorie réglementée : l'annonce passe en revue manuelle avant publication.
+  requiresReview Boolean         @default(false)
+  allowedModes   TransportMode[]
+  sortOrder      Int             @default(0)
+  parcels        Parcel[]
+
+  @@map("parcel_category")
+}
+
+// ─────────────────────────────── Marketplace ───────────────────────────────
+
+model Trip {
+  id                 String        @id @default(cuid())
+  travelerId         String
+  traveler           User          @relation(fields: [travelerId], references: [id], onDelete: Restrict)
+  originCityId       String
+  destCityId         String
+  originCity         City          @relation("TripOrigin", fields: [originCityId], references: [id])
+  destCity           City          @relation("TripDestination", fields: [destCityId], references: [id])
+  departureDate      DateTime      @db.Date
+  arrivalDate        DateTime?     @db.Date
+  transportMode      TransportMode
+  // Capacité (TripCapacity fusionnée ici) : les réservations décrémentent la
+  // capacité via un UPDATE conditionnel atomique + contrainte CHECK SQL.
+  capacityGrams      Int
+  reservedGrams      Int           @default(0)
+  capacityVolumeCm3  Int?
+  reservedVolumeCm3  Int           @default(0)
+  pricePerKg         Int
+  minPrice           Int           @default(0)
+  currency           String        @db.Char(3)
+  acceptsFragile     Boolean       @default(false)
+  description        String?       @db.VarChar(2000)
+  conditions         String?       @db.VarChar(2000)
+  status             TripStatus    @default(PUBLISHED)
+  moderationNote     String?
+  isDemo             Boolean       @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  proposals          Proposal[]
+  bookings           Booking[]
+
+  @@index([status, originCityId, destCityId, departureDate])
+  @@index([status, departureDate])
+  @@index([travelerId, createdAt])
+  @@map("trip")
+}
+
+model Parcel {
+  id                 String        @id @default(cuid())
+  senderId           String
+  sender             User          @relation(fields: [senderId], references: [id], onDelete: Restrict)
+  originCityId       String
+  destCityId         String
+  originCity         City          @relation("ParcelOrigin", fields: [originCityId], references: [id])
+  destCity           City          @relation("ParcelDestination", fields: [destCityId], references: [id])
+  desiredDate        DateTime      @db.Date
+  dateFlexDays       Int           @default(0)
+  title              String        @db.VarChar(120)
+  categoryId         String
+  category           ParcelCategory @relation(fields: [categoryId], references: [id])
+  description        String        @db.VarChar(2000)
+  weightGrams        Int
+  lengthCm           Int
+  widthCm            Int
+  heightCm           Int
+  quantity           Int           @default(1)
+  declaredValue      Int
+  isFragile          Boolean       @default(false)
+  specialConditions  String?       @db.VarChar(1000)
+  budget             Int
+  currency           String        @db.Char(3)
+  status             ParcelStatus  @default(DRAFT)
+  honorDeclarationAt DateTime?
+  rulesAcceptedAt    DateTime?
+  publishedAt        DateTime?
+  expiresAt          DateTime?
+  moderationNote     String?
+  isDemo             Boolean       @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  recipient          ParcelRecipient?
+  photos             ParcelPhoto[]
+  proposals          Proposal[]
+  bookings           Booking[]
+
+  @@index([status, originCityId, destCityId, desiredDate])
+  @@index([status, desiredDate])
+  @@index([senderId, createdAt])
+  @@map("parcel")
+}
+
+// Données privées du destinataire : jamais exposées publiquement ; visibles par le
+// transporteur seulement après paiement confirmé de la réservation.
+model ParcelRecipient {
+  parcelId     String  @id
+  parcel       Parcel  @relation(fields: [parcelId], references: [id], onDelete: Cascade)
+  name         String  @db.VarChar(120)
+  phone        String  @db.VarChar(32)
+  email        String? @db.VarChar(200)
+  city         String  @db.VarChar(120)
+  instructions String? @db.VarChar(1000)
+
+  @@map("parcel_recipient")
+}
+
+model ParcelPhoto {
+  id         String   @id @default(cuid())
+  parcelId   String
+  parcel     Parcel   @relation(fields: [parcelId], references: [id], onDelete: Cascade)
+  storageKey String   @unique
+  mimeType   String
+  sizeBytes  Int
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([parcelId])
+  @@map("parcel_photo")
+}
+
+model Proposal {
+  id          String            @id @default(cuid())
+  parcelId    String
+  tripId      String
+  travelerId  String
+  authorId    String
+  initiatedBy ProposalInitiator
+  parcel      Parcel            @relation(fields: [parcelId], references: [id], onDelete: Cascade)
+  trip        Trip              @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  traveler    User              @relation("ProposalTraveler", fields: [travelerId], references: [id])
+  author      User              @relation("ProposalAuthor", fields: [authorId], references: [id])
+  price       Int
+  currency    String            @db.Char(3)
+  message     String?           @db.VarChar(1000)
+  status      ProposalStatus    @default(PENDING)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  respondedAt DateTime?
+
+  booking     Booking?
+
+  @@unique([parcelId, tripId])
+  @@index([parcelId, status])
+  @@index([travelerId, status])
+  @@map("proposal")
+}
+
+model Booking {
+  id                String        @id @default(cuid())
+  reference         String        @unique
+  parcelId          String
+  tripId            String
+  proposalId        String        @unique
+  senderId          String
+  travelerId        String
+  parcel            Parcel        @relation(fields: [parcelId], references: [id])
+  trip              Trip          @relation(fields: [tripId], references: [id])
+  proposal          Proposal      @relation(fields: [proposalId], references: [id])
+  sender            User          @relation("BookingSender", fields: [senderId], references: [id])
+  traveler          User          @relation("BookingTraveler", fields: [travelerId], references: [id])
+  status            BookingStatus @default(PENDING)
+  // Montants figés à l'acceptation : jamais modifiables ensuite.
+  transportPrice    Int
+  platformFee       Int
+  commissionRateBps Int
+  travelerNet       Int
+  totalCharged      Int
+  currency          String        @db.Char(3)
+  weightGrams       Int
+  volumeCm3         Int
+  // Verrou optimiste pour les transitions concurrentes.
+  version           Int           @default(0)
+  acceptedAt        DateTime?
+  paidAt            DateTime?
+  pickedUpAt        DateTime?
+  deliveredAt       DateTime?
+  completedAt       DateTime?
+  cancelledAt       DateTime?
+  cancelReason      String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  statusHistory     BookingStatusHistory[]
+  payments          Payment[]
+  payout            Payout?
+  commission        Commission?
+  events            DeliveryEvent[]
+  verifications     DeliveryVerification[]
+  reviews           Review[]
+  disputes          Dispute[]
+  conversation      Conversation?
+
+  @@index([senderId, createdAt])
+  @@index([travelerId, createdAt])
+  @@index([status])
+  @@index([parcelId])
+  @@index([tripId])
+  @@map("booking")
+}
+
+model BookingStatusHistory {
+  id         String         @id @default(cuid())
+  bookingId  String
+  booking    Booking        @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  fromStatus BookingStatus?
+  toStatus   BookingStatus
+  actorId    String?
+  reason     String?
+  metadata   Json?
+  createdAt  DateTime       @default(now())
+
+  @@index([bookingId, createdAt])
+  @@map("booking_status_history")
+}
+
+// ─────────────────────────────── Paiements ───────────────────────────────
+
+model PayoutAccount {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider          String
+  providerAccountId String   @unique
+  countryCode       String   @db.Char(2)
+  payoutsEnabled    Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([userId, provider])
+  @@map("payout_account")
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  bookingId         String
+  booking           Booking       @relation(fields: [bookingId], references: [id])
+  provider          String
+  providerSessionId String?       @unique
+  providerPaymentId String?       @unique
+  idempotencyKey    String        @unique
+  amount            Int
+  currency          String        @db.Char(3)
+  status            PaymentStatus @default(REQUIRES_PAYMENT)
+  failureReason     String?
+  receiptNumber     String?       @unique
+  amountRefunded    Int           @default(0)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  succeededAt       DateTime?
+
+  events            PaymentEvent[]
+  refunds           Refund[]
+
+  @@index([bookingId])
+  @@index([status, createdAt])
+  @@map("payment")
+}
+
+// Journal des événements prestataire. L'unicité de providerEventId garantit
+// qu'un webhook reçu deux fois n'est traité qu'une seule fois.
+model PaymentEvent {
+  id              String    @id @default(cuid())
+  provider        String
+  providerEventId String
+  type            String
+  paymentId       String?
+  payment         Payment?  @relation(fields: [paymentId], references: [id])
+  payload         Json
+  processedAt     DateTime?
+  error           String?
+  createdAt       DateTime  @default(now())
+
+  @@unique([provider, providerEventId])
+  @@map("payment_event")
+}
+
+model Refund {
+  id               String       @id @default(cuid())
+  paymentId        String
+  payment          Payment      @relation(fields: [paymentId], references: [id])
+  amount           Int
+  currency         String       @db.Char(3)
+  providerRefundId String?      @unique
+  idempotencyKey   String       @unique
+  status           RefundStatus @default(PENDING)
+  reason           String?
+  initiatedById    String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  @@index([paymentId])
+  @@map("refund")
+}
+
+model Payout {
+  id                 String       @id @default(cuid())
+  bookingId          String       @unique
+  booking            Booking      @relation(fields: [bookingId], references: [id])
+  travelerId         String
+  traveler           User         @relation(fields: [travelerId], references: [id])
+  amount             Int
+  currency           String       @db.Char(3)
+  provider           String
+  providerTransferId String?      @unique
+  idempotencyKey     String       @unique
+  status             PayoutStatus @default(PENDING)
+  blockedReason      String?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  paidAt             DateTime?
+
+  @@index([travelerId, status])
+  @@index([status])
+  @@map("payout")
+}
+
+model Commission {
+  id        String           @id @default(cuid())
+  bookingId String           @unique
+  booking   Booking          @relation(fields: [bookingId], references: [id])
+  rateBps   Int
+  amount    Int
+  currency  String           @db.Char(3)
+  status    CommissionStatus @default(ESTIMATED)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([status, createdAt])
+  @@map("commission")
+}
+
+// ─────────────────────────────── Livraison ───────────────────────────────
+
+model DeliveryEvent {
+  id        String            @id @default(cuid())
+  bookingId String
+  booking   Booking           @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  type      DeliveryEventType
+  actorId   String?
+  metadata  Json?
+  createdAt DateTime          @default(now())
+
+  @@index([bookingId, createdAt])
+  @@map("delivery_event")
+}
+
+// Codes OTP / jetons QR : stockés uniquement sous forme de hash HMAC.
+model DeliveryVerification {
+  id            String              @id @default(cuid())
+  bookingId     String
+  booking       Booking             @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  purpose       VerificationPurpose
+  codeHash      String
+  qrTokenHash   String              @unique
+  expiresAt     DateTime
+  attempts      Int                 @default(0)
+  maxAttempts   Int                 @default(5)
+  sendCount     Int                 @default(1)
+  lastSentAt    DateTime            @default(now())
+  consumedAt    DateTime?
+  invalidatedAt DateTime?
+  createdAt     DateTime            @default(now())
+
+  @@index([bookingId, purpose, createdAt])
+  @@map("delivery_verification")
+}
+
+// ─────────────────────────────── Messagerie ───────────────────────────────
+
+model Conversation {
+  id            String    @id @default(cuid())
+  bookingId     String?   @unique
+  booking       Booking?  @relation(fields: [bookingId], references: [id])
+  parcelId      String?
+  tripId        String?
+  // Clé de déduplication : une seule conversation par paire d'utilisateurs et par annonce.
+  contextKey    String    @unique
+  createdAt     DateTime  @default(now())
+  lastMessageAt DateTime  @default(now())
+
+  participants  ConversationParticipant[]
+  messages      Message[]
+
+  @@index([lastMessageAt])
+  @@map("conversation")
+}
+
+model ConversationParticipant {
+  conversationId String
+  userId         String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastReadAt     DateTime?
+  joinedAt       DateTime     @default(now())
+
+  @@id([conversationId, userId])
+  @@index([userId])
+  @@map("conversation_participant")
+}
+
+model Message {
+  id                String       @id @default(cuid())
+  conversationId    String
+  conversation      Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId          String
+  sender            User         @relation(fields: [senderId], references: [id])
+  body              String       @db.VarChar(4000)
+  attachmentKey     String?
+  attachmentMime    String?
+  attachmentName    String?
+  isHidden          Boolean      @default(false)
+  createdAt         DateTime     @default(now())
+
+  @@index([conversationId, createdAt])
+  @@map("message")
+}
+
+// ─────────────────────────────── Notifications & jobs ───────────────────────────────
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String
+  body      String
+  link      String?
+  data      Json?
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  @@index([userId, readAt, createdAt])
+  @@map("notification")
+}
+
+// File de tâches transactionnelle (outbox) : emails, SMS, calculs de matching.
+model Job {
+  id        String    @id @default(cuid())
+  type      String
+  payload   Json
+  status    JobStatus @default(PENDING)
+  attempts  Int       @default(0)
+  maxAttempts Int     @default(5)
+  runAt     DateTime  @default(now())
+  lockedAt  DateTime?
+  lastError String?
+  dedupeKey String?   @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([status, runAt])
+  @@map("job")
+}
+
+// Copie des emails émis. En développement (EMAIL_PROVIDER=outbox) c'est le seul
+// canal : aucun email réel n'est envoyé.
+model EmailLog {
+  id         String   @id @default(cuid())
+  to         String
+  subject    String
+  html       String
+  text       String
+  provider   String
+  providerId String?
+  template   String
+  createdAt  DateTime @default(now())
+
+  @@index([to, createdAt])
+  @@map("email_log")
+}
+
+// ─────────────────────────────── Confiance & litiges ───────────────────────────────
+
+model Review {
+  id        String       @id @default(cuid())
+  bookingId String
+  booking   Booking      @relation(fields: [bookingId], references: [id])
+  authorId  String
+  subjectId String
+  author    User         @relation("ReviewAuthor", fields: [authorId], references: [id])
+  subject   User         @relation("ReviewSubject", fields: [subjectId], references: [id])
+  rating    Int
+  comment   String?      @db.VarChar(1000)
+  status    ReviewStatus @default(VISIBLE)
+  createdAt DateTime     @default(now())
+
+  @@unique([bookingId, authorId])
+  @@index([subjectId, status, createdAt])
+  @@map("review")
+}
+
+model Dispute {
+  id           String             @id @default(cuid())
+  bookingId    String
+  booking      Booking            @relation(fields: [bookingId], references: [id])
+  openedById   String
+  openedBy     User               @relation("DisputeOpener", fields: [openedById], references: [id])
+  assignedToId String?
+  assignedTo   User?              @relation("DisputeAssignee", fields: [assignedToId], references: [id])
+  type         DisputeType
+  description  String             @db.VarChar(4000)
+  status       DisputeStatus      @default(OPEN)
+  // Statut de la réservation au moment de l'ouverture, pour pouvoir la rétablir.
+  previousBookingStatus BookingStatus
+  resolution   DisputeResolution?
+  refundAmount Int?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  resolvedAt   DateTime?
+
+  evidence     DisputeEvidence[]
+  events       DisputeEvent[]
+
+  @@index([status, createdAt])
+  @@index([bookingId])
+  @@map("dispute")
+}
+
+model DisputeEvidence {
+  id         String   @id @default(cuid())
+  disputeId  String
+  dispute    Dispute  @relation(fields: [disputeId], references: [id], onDelete: Cascade)
+  uploaderId String
+  storageKey String   @unique
+  mimeType   String
+  sizeBytes  Int
+  fileName   String
+  createdAt  DateTime @default(now())
+
+  @@index([disputeId])
+  @@map("dispute_evidence")
+}
+
+model DisputeEvent {
+  id        String   @id @default(cuid())
+  disputeId String
+  dispute   Dispute  @relation(fields: [disputeId], references: [id], onDelete: Cascade)
+  actorId   String?
+  type      String
+  note      String?  @db.VarChar(4000)
+  // Message visible par les deux parties (sinon note interne admin).
+  isPublic  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([disputeId, createdAt])
+  @@map("dispute_event")
+}
+
+model Report {
+  id          String       @id @default(cuid())
+  reporterId  String
+  reporter    User         @relation("ReportReporter", fields: [reporterId], references: [id])
+  targetType  ReportTarget
+  targetId    String
+  reason      String       @db.VarChar(120)
+  details     String?      @db.VarChar(2000)
+  status      ReportStatus @default(OPEN)
+  handledById String?
+  handledAt   DateTime?
+  createdAt   DateTime     @default(now())
+
+  @@index([status, createdAt])
+  @@index([targetType, targetId])
+  @@map("report")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action     String
+  targetType String
+  targetId   String?
+  metadata   Json?
+  ip         String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([targetType, targetId])
+  @@index([actorId, createdAt])
+  @@map("audit_log")
+}
+
+// ─────────────────────────────── Configuration ───────────────────────────────
+
+model PlatformSetting {
+  key         String   @id
+  value       Json
+  updatedById String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("platform_setting")
+}
+
+model FaqItem {
+  id          String   @id @default(cuid())
+  question    String   @db.VarChar(300)
+  answer      String   @db.VarChar(4000)
+  category    String   @default("general")
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+
+  @@map("faq_item")
+}
+
+// Limiteur de débit applicatif (hors routes d'authentification, gérées par Better Auth).
+model RateLimitBucket {
+  key         String
+  windowStart DateTime
+  count       Int      @default(0)
+
+  @@id([key, windowStart])
+  @@index([windowStart])
+  @@map("rate_limit_bucket")
+}
