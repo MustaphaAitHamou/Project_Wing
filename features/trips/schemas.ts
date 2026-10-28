@@ -14,8 +14,8 @@ export const tripInputSchema = z
     minPrice: moneyInput("Prix minimum", { min: 0, max: 500_00 }).default(0),
     currency: z.enum(SUPPORTED_CURRENCIES).default("EUR"),
     acceptsFragile: z.boolean().default(false),
-    description: z.string().trim().max(2000).optional().transform((s) => s || undefined),
-    conditions: z.string().trim().max(2000).optional().transform((s) => s || undefined),
+    description: z.string().trim().max(2000).transform((s) => s || undefined).optional(),
+    conditions: z.string().trim().max(2000).transform((s) => s || undefined).optional(),
   })
   .refine((d) => d.originCityId !== d.destCityId, { path: ["destCityId"], message: "La ville d'arrivée doit différer de la ville de départ" })
   .refine((d) => !d.arrivalDate || d.arrivalDate >= d.departureDate, { path: ["arrivalDate"], message: "L'arrivée doit suivre le départ" });

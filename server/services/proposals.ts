@@ -19,7 +19,7 @@ export const createProposalSchema = z.object({
   parcelId: idSchema,
   tripId: idSchema,
   price: moneyInput("Prix", { min: 500, max: 500_000 }),
-  message: z.string().trim().max(1000).optional().transform((s) => s || undefined),
+  message: z.string().trim().max(1000).transform((s) => s || undefined).optional(),
 });
 
 /**

@@ -25,6 +25,7 @@ export const auth = betterAuth({
       countryCode: { type: "string", required: false, input: true },
       role: { type: "string", required: false, input: false, defaultValue: "USER" },
       status: { type: "string", required: false, input: false, defaultValue: "ACTIVE" },
+      termsAcceptedAt: { type: "date", required: false, input: false },
     },
     changeEmail: { enabled: false },
   },

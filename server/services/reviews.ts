@@ -10,7 +10,7 @@ import { Prisma } from "@/generated/prisma/client";
 export const reviewSchema = z.object({
   bookingId: z.string().min(1).max(64),
   rating: z.coerce.number().int().min(1, "Note entre 1 et 5").max(5, "Note entre 1 et 5"),
-  comment: z.string().trim().max(1000).optional().transform((s) => s || undefined),
+  comment: z.string().trim().max(1000).transform((s) => s || undefined).optional(),
 });
 
 /**

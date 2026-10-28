@@ -22,7 +22,7 @@ export const parcelDetailsSchema = z.object({
   quantity: z.coerce.number().int().min(1).max(50).default(1),
   declaredValue: moneyInput("Valeur déclarée", { min: 0, max: 1_000_000 }),
   isFragile: z.boolean().default(false),
-  specialConditions: z.string().trim().max(1000).optional().transform((s) => s || undefined),
+  specialConditions: z.string().trim().max(1000).transform((s) => s || undefined).optional(),
 });
 
 export const parcelRecipientSchema = z.object({
@@ -30,7 +30,7 @@ export const parcelRecipientSchema = z.object({
   phone: phoneSchema,
   email: z.string().trim().toLowerCase().email("Email invalide").max(200).optional().or(z.literal("").transform(() => undefined)),
   city: z.string().trim().min(2, "Ville requise").max(120),
-  instructions: z.string().trim().max(1000).optional().transform((s) => s || undefined),
+  instructions: z.string().trim().max(1000).transform((s) => s || undefined).optional(),
 });
 
 export const parcelBudgetSchema = z.object({
