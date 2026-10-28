@@ -38,7 +38,6 @@ export function ProposeDialog({ mode, fixedId, options, suggestedPrice, triggerL
   const [price, setPrice] = React.useState(sug ? String(sug / 100) : "");
   const [message, setMessage] = React.useState("");
   const create = useAction(createProposalAction, { success: "Proposition envoyée", onSuccess: () => setOpen(false) });
-  React.useEffect(() => { if (sug) setPrice(String(sug / 100)); }, [choice, sug]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild><Button><Send />{triggerLabel}</Button></DialogTrigger>
@@ -51,7 +50,7 @@ export function ProposeDialog({ mode, fixedId, options, suggestedPrice, triggerL
           }}
         >
           <Field id="proposal-choice" label={mode === "traveler" ? "Votre trajet" : "Votre colis"}>
-            <Select value={choice} onChange={(e) => setChoice(e.target.value)}>{options.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}</Select>
+            <Select value={choice} onChange={(e) => { setChoice(e.target.value); const s2 = options.find((o) => o.id === e.target.value)?.suggested; if (s2) setPrice(String(s2 / 100)); }}>{options.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}</Select>
           </Field>
           <Field id="proposal-price" label="Prix du transport (€)" hint="Une commission de plateforme s'applique selon les conditions affichées sur la page Tarifs." error={create.fieldErrors.price?.[0]}>
             <Input inputMode="decimal" value={price} onChange={(e) => setPrice(e.target.value)} />

@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils";
 export function MobileNav({ signedIn }: { signedIn: boolean }) {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
-  React.useEffect(() => setOpen(false), [pathname]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -20,7 +19,7 @@ export function MobileNav({ signedIn }: { signedIn: boolean }) {
         </Button>
       </DialogTrigger>
       <DialogContent title="Menu" side="right" className="content-start">
-        <nav className="grid gap-1" aria-label="Navigation principale">
+        <nav className="grid gap-1" aria-label="Navigation principale" onClick={(e) => (e.target as HTMLElement).closest("a") && setOpen(false)}>
           <Link href="/" className={cn("rounded-lg px-3 py-3 text-base font-medium hover:bg-muted", pathname === "/" && "bg-muted")}>Accueil</Link>
           {PUBLIC_NAV.map((l) => (
             <Link key={l.href} href={l.href} className={cn("rounded-lg px-3 py-3 text-base font-medium hover:bg-muted", pathname.startsWith(l.href) && "bg-muted")}>
@@ -28,7 +27,7 @@ export function MobileNav({ signedIn }: { signedIn: boolean }) {
             </Link>
           ))}
         </nav>
-        <div className="grid gap-2 border-t pt-4">
+        <div className="grid gap-2 border-t pt-4" onClick={(e) => (e.target as HTMLElement).closest("a") && setOpen(false)}>
           {signedIn ? (
             <Button asChild><Link href="/tableau-de-bord">Mon tableau de bord</Link></Button>
           ) : (

@@ -37,7 +37,12 @@ export function CityCombobox({
   const [loading, setLoading] = React.useState(false);
   const listId = `${id}-list`;
 
-  React.useEffect(() => setQuery(value?.name ?? ""), [value?.id, value?.name]);
+  // Resynchronise le texte affiché quand la valeur change depuis le parent (ex. inversion départ/arrivée).
+  const [syncedId, setSyncedId] = React.useState(value?.id);
+  if (value?.id !== syncedId) {
+    setSyncedId(value?.id);
+    if (value) setQuery(value.name);
+  }
 
   React.useEffect(() => {
     if (!open) return;

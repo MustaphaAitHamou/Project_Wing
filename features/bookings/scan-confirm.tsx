@@ -9,9 +9,9 @@ import { verifyCodeAction } from "./actions";
 export function ScanConfirm({ bookingId, purpose }: { bookingId: string; purpose: "PICKUP" | "DELIVERY" }) {
   const [state, setState] = React.useState<"idle" | "pending" | "ok" | "error">("idle");
   const [error, setError] = React.useState("");
-  const [token, setToken] = React.useState<string | null>(null);
+  const token = React.useRef<string | null>(null);
   React.useEffect(() => {
-    setToken(window.location.hash.slice(1) || null);
+    token.current = window.location.hash.slice(1) || null;
     // Retire le jeton de l'historique du navigateur.
     history.replaceState(null, "", window.location.pathname + window.location.search);
   }, []);
@@ -27,11 +27,11 @@ export function ScanConfirm({ bookingId, purpose }: { bookingId: string; purpose
     <div className="grid gap-4">
       <h1 className="text-2xl font-bold">{purpose === "PICKUP" ? "Confirmer la remise du colis" : "Confirmer la livraison"}</h1>
       <p className="text-sm text-muted-foreground">Ne confirmez qu&apos;après avoir vérifié le contenu du colis avec l&apos;expéditeur.</p>
-      {!token && <Alert tone="danger">QR code incomplet. Saisissez plutôt le code à 6 chiffres depuis la page de la réservation.</Alert>}
       {state === "error" && <Alert tone="danger">{error}</Alert>}
-      <Button size="lg" disabled={!token} loading={state === "pending"} onClick={async () => {
+      <Button size="lg" loading={state === "pending"} onClick={async () => {
+        if (!token.current) { setError("QR code incomplet. Saisissez plutôt le code à 6 chiffres depuis la page de la réservation."); setState("error"); return; }
         setState("pending");
-        const r = await verifyCodeAction({ bookingId, purpose, qrToken: token ?? undefined });
+        const r = await verifyCodeAction({ bookingId, purpose, qrToken: token.current });
         if (r.ok) setState("ok");
         else { setError(r.error); setState("error"); }
       }}>Je confirme avoir {purpose === "PICKUP" ? "reçu le colis" : "remis le colis"}</Button>

@@ -19,7 +19,7 @@ export const localSandboxProvider: PaymentProvider = {
   name: "local_sandbox",
   label: "Simulateur de paiement (aucun débit réel)",
   isSandbox: true,
-  async createCheckout(a) {
+  async createCheckout(_a) {
     const sessionId = `sbx_cs_${randomUUID()}`;
     return { sessionId, url: `/dev/paiement/${sessionId}` };
   },

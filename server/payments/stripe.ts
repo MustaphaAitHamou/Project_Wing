@@ -1,7 +1,7 @@
 import "server-only";
 import Stripe from "stripe";
 import { env } from "@/lib/env";
-import type { NormalizedEvent, PaymentProvider } from "./types";
+import type { PaymentProvider } from "./types";
 
 let client: Stripe | null = null;
 const stripe = () => (client ??= new Stripe(env.STRIPE_SECRET_KEY!, { appInfo: { name: "Tamurt Sending" } }));

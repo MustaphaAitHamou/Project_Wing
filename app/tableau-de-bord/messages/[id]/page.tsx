@@ -10,11 +10,9 @@ export const metadata: Metadata = { title: "Conversation" };
 export default async function ConversationPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const user = await requireUserPage(`/tableau-de-bord/messages/${id}`);
-  try {
-    const conv = await getConversation(user.id, id);
-    return <ChatThread conv={conv} />;
-  } catch (e) {
+  const conv = await getConversation(user.id, id).catch((e: unknown) => {
     if (e instanceof AppError && e.code === "NOT_FOUND") notFound();
     throw e;
-  }
+  });
+  return <ChatThread conv={conv} />;
 }
