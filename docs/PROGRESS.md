@@ -15,5 +15,22 @@ Dernière mise à jour : 28/10/2026.
 | 9. Qualité et sécurité | ✔ | Voir « Tests » ci-dessous ; audit des dépendances propre. |
 | 10. Préparation production | Partiel | Documentation, CI, checklist ✔ ; Sentry, mesures Lighthouse en préproduction, déploiement : à faire par le propriétaire. |
 
-## Tests (dernier passage)
-Voir le rapport final de la session ; résultats reproductibles avec `pnpm test` et `pnpm test:e2e`.
+## Tests (dernier passage, 28/10/2026)
+| Suite | Résultat |
+|---|---|
+| Unitaires (Vitest) : commissions, montants, machine à états, matching, OTP, normalisation, schémas | 32/32 ✔ |
+| Intégration (Vitest + PostgreSQL) : cycle complet, IDOR, OTP, webhooks, double paiement, concurrence, capacité, KYC, catégories, corridors, annulation/remboursement, litige | 32/32 ✔ |
+| E2E (Playwright, build de production) : scénarios A, B, C, D | 19/19 ✔ |
+| TypeScript strict | 0 erreur |
+| ESLint | 0 erreur, 5 avertissements |
+| `pnpm audit` | aucune vulnérabilité |
+| Build de production | ✔ |
+
+## Lighthouse (local, build de production, profil mobile simulé par défaut)
+| Page | Performance | Accessibilité | Bonnes pratiques | SEO |
+|---|---|---|---|---|
+| Accueil | 83 | 100 | 100 | 100 |
+| Recherche (Marseille → Béjaïa) | 92 | 100 | 100 | 100 |
+| Connexion | 83 | 100 | 96 | 63 (page volontairement `noindex`) |
+
+Accueil et connexion sous l'objectif de 90 en performance (TBT 340 à 510 ms sur CPU mobile simulé, LCP 2,8 à 3,5 s). Mesure locale, sans CDN ni compression de l'hébergeur : à refaire sur la préproduction. Pistes : réduire le JavaScript client de l'en-tête et du formulaire de recherche, précharger la police d'affichage.
