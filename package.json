@@ -35,7 +35,7 @@
     "clsx": "2.1.1",
     "date-fns": "4.4.0",
     "lucide-react": "1.56.0",
-    "next": "16.4.0",
+    "next": "16.4.3",
     "next-themes": "0.4.6",
     "pg": "8.23.1",
     "qrcode": "1.5.4",
@@ -59,7 +59,11 @@
       "sharp",
       "@tailwindcss/oxide",
       "unrs-resolver"
-    ]
+    ],
+    "overrides": {
+      "mysql2": "3.24.6",
+      "deepmerge-ts": "8.0.2"
+    }
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
@@ -71,7 +75,7 @@
     "@types/react-dom": "19.3.0",
     "dotenv": "18.0.7",
     "eslint": "9.39.1",
-    "eslint-config-next": "16.4.0",
+    "eslint-config-next": "16.4.3",
     "prisma": "7.10.0",
     "tailwindcss": "4.3.3",
     "tsx": "4.23.15",
