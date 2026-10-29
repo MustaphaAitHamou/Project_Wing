@@ -1,0 +1,295 @@
+<title>Kabyle Solide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800;900&family=Manrope:wght@400;600;700&family=Noto+Sans+Tifinagh&display=swap">
+<style>
+/* Layout: bandes pleine largeur rythmées par des frises de motifs kabyles (losanges, chevrons) comme sur la poterie et les bijoux émaillés */
+:root{
+  --chaux:#F6F5F1;      /* mur blanchi à la chaux */
+  --encre:#17162A;      /* nuit sur le Djurdjura */
+  --argile:#C8381F;     /* rouge des poteries de Maâtkas */
+  --email:#13806A;      /* vert des émaux d'Ath Yenni */
+  --safran:#E3A01B;     /* jaune des robes kabyles */
+  --cobalt:#2747A8;     /* bleu des émaux */
+  --surface:#FFFFFF;
+  --muted:#5A586B;
+  --ligne:#DDDAD2;
+  --f-display:"Unbounded", "Arial Black", system-ui, sans-serif;
+  --f-body:"Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-tif:"Noto Sans Tifinagh", serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --chaux:#121120;--encre:#F1EFE8;--surface:#1C1B2E;--muted:#A9A6B8;--ligne:#2E2C44;
+  --argile:#E8563B;--email:#2BB394;--safran:#F2B437;--cobalt:#6F8CF0;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --chaux:#121120;--encre:#F1EFE8;--surface:#1C1B2E;--muted:#A9A6B8;--ligne:#2E2C44;
+  --argile:#E8563B;--email:#2BB394;--safran:#F2B437;--cobalt:#6F8CF0;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--chaux);color:var(--encre);font-family:var(--f-body);font-size:17px;line-height:1.6}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--safran);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.05}
+.eyebrow{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--argile)}
+
+/* frise */
+.frise{height:22px;background:
+  linear-gradient(135deg,var(--argile) 25%,transparent 25%) 0 0/22px 22px,
+  linear-gradient(225deg,var(--argile) 25%,transparent 25%) 0 0/22px 22px,
+  linear-gradient(45deg,var(--safran) 25%,transparent 25%) 0 0/22px 22px,
+  linear-gradient(315deg,var(--safran) 25%,var(--encre) 25%) 0 0/22px 22px}
+
+/* nav */
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--chaux);border-bottom:1px solid var(--ligne)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--chaux)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-display);font-weight:900;font-size:1rem;letter-spacing:.02em}
+.logo .yaz{font-family:var(--f-tif);color:var(--argile);font-size:1.7rem;line-height:1}
+.nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-weight:600;font-size:.92rem}
+.nav ul a{text-decoration:none}
+.nav ul a:hover{color:var(--argile)}
+@media (max-width:640px){.nav ul li:not(:last-child){display:none}}
+
+/* hero */
+.hero{padding-block:72px 64px;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.25fr .9fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(3rem,9vw,6.6rem);font-weight:900;letter-spacing:-.02em;text-transform:uppercase}
+.hero h1 .l2{display:block;-webkit-text-stroke:2px var(--encre);color:transparent}
+.hero p.lead{font-size:1.18rem;max-width:34ch;margin:24px 0 32px;color:var(--muted)}
+.tif{font-family:var(--f-tif);font-size:1.1rem;color:var(--email);letter-spacing:.08em;margin-top:18px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;font-weight:700;text-decoration:none;border:2px solid var(--encre);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.plein{background:var(--encre);color:var(--chaux)}
+.btn svg{width:18px;height:18px}
+.emblem{aspect-ratio:1;max-width:100%;width:100%;position:relative}
+.emblem svg{width:100%;height:100%;display:block}
+@media (max-width:820px){.hero .wrap{grid-template-columns:1fr}.emblem{max-width:340px;margin:0 auto}}
+@media (prefers-reduced-motion:no-preference){.spin{animation:spin 60s linear infinite;transform-origin:50% 50%}@keyframes spin{to{transform:rotate(360deg)}}}
+
+/* bande noire manifeste */
+.manif{background:var(--encre);color:var(--chaux)}
+.manif .wrap{padding-block:80px;display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:start}
+.manif .big{font-family:var(--f-tif);font-size:clamp(6rem,16vw,11rem);line-height:.8;color:var(--safran)}
+.manif h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:20px}
+.manif h2 em{font-style:normal;color:var(--safran)}
+.manif p{max-width:62ch;opacity:.85;margin:0 0 14px}
+@media (max-width:700px){.manif .wrap{grid-template-columns:1fr;gap:16px}}
+
+/* piliers */
+section.bloc{padding-block:88px}
+.titre{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.titre h2{font-size:clamp(2rem,5vw,3.4rem);font-weight:900;text-transform:uppercase}
+.titre p{max-width:40ch;color:var(--muted);margin:0}
+.piliers{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--encre)}
+.pilier{padding:28px 28px 8px 0;min-width:0}
+.pilier + .pilier{padding-left:28px;border-left:1px solid var(--ligne)}
+.pilier .motif{width:56px;height:56px;margin-bottom:18px}
+.pilier h3{font-size:1.25rem;font-weight:800;margin-bottom:10px}
+.pilier p{margin:0;color:var(--muted)}
+.pilier .kab{display:block;font-weight:700;color:var(--email);font-size:.85rem;letter-spacing:.06em;margin-top:2px}
+@media (max-width:800px){.piliers{grid-template-columns:1fr}.pilier,.pilier + .pilier{padding:24px 0;border-left:0;border-bottom:1px solid var(--ligne)}}
+
+/* galerie */
+.galerie{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:12px}
+.tuile{border-radius:4px;position:relative;overflow:hidden;display:flex;align-items:end;padding:14px;text-decoration:none;color:#fff;min-width:0}
+.tuile span{font-weight:700;font-size:.85rem;background:rgba(0,0,0,.45);padding:4px 10px;border-radius:999px;backdrop-filter:blur(4px)}
+.tuile.g{grid-column:span 2;grid-row:span 2}
+.t1{background:radial-gradient(circle at 30% 40%,var(--safran) 0 18%,transparent 19%),repeating-linear-gradient(45deg,var(--argile) 0 14px,#9E2A15 14px 28px)}
+.t2{background:conic-gradient(from 45deg,var(--email) 25%,var(--cobalt) 0 50%,var(--email) 0 75%,var(--cobalt) 0) 0 0/40px 40px}
+.t3{background:linear-gradient(160deg,var(--cobalt),#0F1B4A)}
+.t4{background:repeating-linear-gradient(90deg,var(--safran) 0 10px,var(--argile) 10px 20px,var(--encre) 20px 30px,var(--email) 30px 40px)}
+.t5{background:linear-gradient(200deg,#F6B66A,var(--argile) 60%,#5B1A3A)}
+.t6{grid-column:span 2;background:
+  linear-gradient(135deg,var(--encre) 25%,transparent 25%) -20px 0/40px 40px,
+  linear-gradient(225deg,var(--encre) 25%,transparent 25%) -20px 0/40px 40px,
+  linear-gradient(315deg,var(--encre) 25%,transparent 25%) 0 0/40px 40px,
+  linear-gradient(45deg,var(--encre) 25%,var(--safran) 25%) 0 0/40px 40px}
+@media (max-width:800px){.galerie{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px}.t6{grid-column:span 2}}
+.note{font-size:.85rem;color:var(--muted);margin-top:14px}
+
+/* lexique */
+.lexique{background:var(--surface);border-block:1px solid var(--ligne)}
+.mots{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.mot{min-width:0}
+.mot b{display:block;font-family:var(--f-display);font-size:1.5rem;font-weight:800}
+.mot i{display:block;font-family:var(--f-tif);font-style:normal;color:var(--argile);margin:4px 0 8px;font-size:1.05rem}
+.mot p{margin:0;color:var(--muted);font-size:.95rem}
+@media (max-width:800px){.mots{grid-template-columns:repeat(2,1fr)}}
+
+/* contact */
+.contact .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center}
+.contact h2{font-size:clamp(2.2rem,6vw,4.2rem);font-weight:900;text-transform:uppercase}
+.contact h2 span{color:var(--argile)}
+.carte{background:var(--surface);border:2px solid var(--encre);border-radius:8px;padding:28px;box-shadow:8px 8px 0 var(--safran)}
+.carte dl{margin:0;display:grid;gap:16px}
+.carte dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.carte dd{margin:2px 0 0;font-weight:700;font-size:1.05rem;display:flex;gap:10px;align-items:center;flex-wrap:wrap;word-break:break-word}
+.copy{font:inherit;font-size:.78rem;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid var(--ligne);background:var(--chaux);color:var(--encre);cursor:pointer}
+@media (max-width:800px){.contact .wrap{grid-template-columns:1fr}}
+
+footer{background:var(--encre);color:var(--chaux)}
+footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.88rem;opacity:.85}
+footer .yaz{font-family:var(--f-tif);color:var(--safran)}
+</style>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="yaz">ⵣ</span>KABYLE SOLIDE</a>
+    <ul>
+      <li><a href="#esprit">L'esprit</a></li>
+      <li><a href="#univers">L'univers</a></li>
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+<div class="frise" aria-hidden="true"></div>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Kabylie × Californie · @dz_kabylifornie</div>
+        <h1 style="margin-top:16px">Kabyle<span class="l2">Solide</span></h1>
+        <p class="lead">Les racines du Djurdjura, l'énergie de la côte ouest. Une identité fière, posée, qui tient debout partout où elle va.</p>
+        <div class="cta">
+          <a class="btn plein" href="https://www.instagram.com/dz_kabylifornie/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            Suivre sur Instagram
+          </a>
+          <a class="btn" href="#univers">Découvrir l'univers</a>
+        </div>
+        <div class="tif" lang="kab-Tfng">ⴰⵣⵓⵍ ⴼⴻⵍⵍⴰⵡⴻⵏ · Azul fellawen</div>
+      </div>
+
+      <div class="emblem" aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <g class="spin">
+            <circle cx="100" cy="100" r="96" fill="none" stroke="var(--encre)" stroke-width="2" stroke-dasharray="4 6"/>
+            <g fill="var(--safran)">
+              <polygon points="100,6 108,20 92,20"/><polygon points="100,194 108,180 92,180"/>
+              <polygon points="6,100 20,92 20,108"/><polygon points="194,100 180,92 180,108"/>
+            </g>
+          </g>
+          <circle cx="100" cy="100" r="78" fill="var(--argile)"/>
+          <polygon points="100,34 166,100 100,166 34,100" fill="var(--safran)"/>
+          <polygon points="100,52 148,100 100,148 52,100" fill="var(--email)"/>
+          <polygon points="100,70 130,100 100,130 70,100" fill="var(--cobalt)"/>
+          <text x="100" y="114" text-anchor="middle" font-family="Noto Sans Tifinagh, serif" font-size="44" fill="#FFFFFF">ⵣ</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="manif" id="esprit">
+    <div class="wrap">
+      <div class="big" aria-hidden="true">ⵣ</div>
+      <div>
+        <div class="eyebrow" style="color:var(--safran)">L'esprit</div>
+        <h2 style="margin-top:12px">Solide comme la montagne, <em>libre</em> comme l'homme qui la porte.</h2>
+        <p>Le Yaz, ⵣ, c'est l'homme libre, Amazigh. C'est notre point de départ. Kabyle Solide raconte une Kabylie qui voyage : des villages accrochés aux crêtes jusqu'aux grandes avenues, sans jamais perdre l'accent.</p>
+        <p>Ici on parle de racines, de style et de famille. On garde la tête haute, on partage, et on reste solides.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloc" id="univers">
+    <div class="wrap">
+      <div class="titre">
+        <h2>L'univers</h2>
+        <p>Trois choses qui nous tiennent debout.</p>
+      </div>
+      <div class="piliers">
+        <article class="pilier">
+          <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><polygon points="28,4 52,28 28,52 4,28" fill="var(--argile)"/><polygon points="28,16 40,28 28,40 16,28" fill="var(--chaux)"/></svg>
+          <h3>Les racines<span class="kab">Iẓuran</span></h3>
+          <p>La langue, les chants, les motifs des poteries et des bijoux d'Ath Yenni. Ce qu'on a reçu, on le porte et on le transmet.</p>
+        </article>
+        <article class="pilier">
+          <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><polyline points="4,40 16,16 28,40 40,16 52,40" fill="none" stroke="var(--email)" stroke-width="7" stroke-linejoin="miter"/></svg>
+          <h3>Le style<span class="kab">Aɣanib</span></h3>
+          <p>Une touche californienne, du soleil et de la décontraction, posée sur une base kabyle qui ne bouge pas.</p>
+        </article>
+        <article class="pilier">
+          <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><circle cx="18" cy="28" r="12" fill="var(--safran)"/><circle cx="38" cy="28" r="12" fill="none" stroke="var(--cobalt)" stroke-width="6"/></svg>
+          <h3>La communauté<span class="kab">Tajmaɛt</span></h3>
+          <p>Comme l'assemblée du village : chacun compte. Ceux d'ici, ceux d'en face, la diaspora entière se retrouve ici.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloc" id="galerie" style="padding-top:0">
+    <div class="wrap">
+      <div class="titre">
+        <h2>Galerie</h2>
+        <p>Le meilleur du compte, en un coup d'œil. Le reste se passe sur Instagram.</p>
+      </div>
+      <div class="galerie">
+        <a class="tuile g t1" href="https://www.instagram.com/dz_kabylifornie/" target="_blank" rel="noopener"><span>Djurdjura</span></a>
+        <a class="tuile t2" href="https://www.instagram.com/dz_kabylifornie/" target="_blank" rel="noopener"><span>Émaux</span></a>
+        <a class="tuile t3" href="https://www.instagram.com/dz_kabylifornie/" target="_blank" rel="noopener"><span>Côte ouest</span></a>
+        <a class="tuile t4" href="https://www.instagram.com/dz_kabylifornie/" target="_blank" rel="noopener"><span>Tiqendyar</span></a>
+        <a class="tuile t5" href="https://www.instagram.com/dz_kabylifornie/" target="_blank" rel="noopener"><span>Coucher de soleil</span></a>
+        <a class="tuile t6" href="https://www.instagram.com/dz_kabylifornie/" target="_blank" rel="noopener"><span>Voir tout sur @dz_kabylifornie</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloc lexique">
+    <div class="wrap">
+      <div class="titre">
+        <h2>Petit lexique</h2>
+        <p>Quatre mots pour parler comme nous.</p>
+      </div>
+      <div class="mots">
+        <div class="mot"><b>Azul</b><i lang="kab-Tfng">ⴰⵣⵓⵍ</i><p>Bonjour, salut. Le premier mot qu'on se dit.</p></div>
+        <div class="mot"><b>Tanemmirt</b><i lang="kab-Tfng">ⵜⴰⵏⴻⵎⵎⵉⵔⵜ</i><p>Merci. Pour le soutien, les partages, les abonnés.</p></div>
+        <div class="mot"><b>Tamurt</b><i lang="kab-Tfng">ⵜⴰⵎⵓⵔⵜ</i><p>Le pays, la terre. Celle qu'on porte même loin d'elle.</p></div>
+        <div class="mot"><b>Amaziɣ</b><i lang="kab-Tfng">ⴰⵎⴰⵣⵉⵖ</i><p>L'homme libre. D'où vient le ⵣ de notre logo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloc contact" id="contact">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Contact</div>
+        <h2 style="margin-top:12px">On reste<br><span>en contact.</span></h2>
+        <p style="color:var(--muted);max-width:42ch">Une collab, une question, une idée ? Écris-nous en message privé sur Instagram, on répond.</p>
+      </div>
+      <div class="carte">
+        <dl>
+          <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/dz_kabylifornie/" target="_blank" rel="noopener">@dz_kabylifornie</a> <button class="copy" type="button" id="copy-ig" data-copy="@dz_kabylifornie">Copier</button></dd></div>
+          <div><dt>Basé entre</dt><dd>Tamurt n Leqbayel ⵣ et la côte ouest</dd></div>
+          <div><dt>Le mieux pour nous joindre</dt><dd>Message privé Instagram</dd></div>
+        </dl>
+        <div class="cta" style="margin-top:24px">
+          <a class="btn plein" href="https://www.instagram.com/dz_kabylifornie/" target="_blank" rel="noopener">Ouvrir Instagram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="frise" aria-hidden="true"></div>
+<footer>
+  <div class="wrap">
+    <span><span class="yaz">ⵣ</span> Kabyle Solide · 2026</span>
+    <span>Azul fellawen, tanemmirt i kunwi.</span>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var t=b.dataset.copy;
+    function ok(){b.textContent='Copié';setTimeout(function(){b.textContent='Copier'},1500)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(ok).catch(function(){b.textContent=t});
+    }else{b.textContent=t}
+  });
+});
+</script>

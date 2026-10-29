@@ -32,3 +32,11 @@ Déploiement bleu/vert ou rolling ; migrations additives d'abord (compatibles av
 
 ## CI/CD
 `.github/workflows/ci.yml` : installation, audit des dépendances, lint, typecheck, tests (PostgreSQL de service), build, E2E. Le déploiement continu n'est pas configuré (à brancher sur l'hébergeur choisi après validation).
+
+## Vercel (configuration fournie : `vercel.json`)
+- Migrations : appliquées automatiquement au build **de production uniquement** (`VERCEL_ENV=production`), jamais par les déploiements de prévisualisation.
+- Crons Vercel : `/api/cron/jobs` et `/api/cron/maintenance` une fois par jour (limite du plan Hobby). Vercel envoie `Authorization: Bearer $CRON_SECRET` automatiquement si `CRON_SECRET` est défini. Les tâches sont aussi traitées juste après chaque requête (`after()`).
+- Définir `INLINE_JOB_WORKER=false` (pas de processus persistant en serverless).
+- Temps réel : les fonctions ont une durée limitée ; la messagerie bascule sur le rafraîchissement périodique (20 s).
+- Fichiers : le disque Vercel n'est pas persistant. Pour une démo, `STORAGE_LOCAL_DIR=/tmp/storage` (photos perdues entre deux invocations) ; en vrai, S3/R2.
+- Démo sans prestataires réels : `E2E_TEST_MODE=true` active les simulateurs (paiement, KYC, pages /dev). À réserver à un déploiement protégé (Vercel Deployment Protection), jamais au site public.

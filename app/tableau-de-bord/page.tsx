@@ -97,7 +97,7 @@ export default async function DashboardHome({ searchParams }: { searchParams: Pr
               <ul className="grid gap-3">
                 {notifications.map((n) => (
                   <li key={n.id} className="grid gap-0.5 text-sm">
-                    <Link href={n.link ?? "/tableau-de-bord/notifications"} className={n.readAt ? "text-muted-foreground" : "font-semibold"}>{n.title}</Link>
+                    <a href={`/tableau-de-bord/notifications/${n.id}`} className={n.readAt ? "text-muted-foreground" : "font-semibold"}>{n.title}</a>
                     <span className="text-xs text-muted-foreground">{formatDateTime(n.createdAt)}</span>
                   </li>
                 ))}

@@ -21,7 +21,7 @@ export default async function NotificationsPage({ searchParams }: { searchParams
           {items.map((n) => (
             <li key={n.id} className={cn("grid gap-0.5 p-4", !n.readAt && "bg-primary-soft/40")}>
               <div className="flex items-start justify-between gap-3">
-                {n.link ? <Link href={n.link} className={cn("hover:underline", !n.readAt ? "font-semibold" : "font-medium")}>{n.title}</Link> : <span className="font-medium">{n.title}</span>}
+                <a href={`/tableau-de-bord/notifications/${n.id}`} className={cn("hover:underline", !n.readAt ? "font-semibold" : "font-medium")}>{n.title}</a>
                 <time className="shrink-0 text-xs text-muted-foreground">{formatDateTime(n.createdAt)}</time>
               </div>
               <p className="text-sm text-muted-foreground">{n.body}</p>
