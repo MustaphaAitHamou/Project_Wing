@@ -79,6 +79,29 @@ test.describe("interface", () => {
   });
 });
 
+test("E8 : un compte non confirmé retrouve son lien dans la boîte de test sans être connecté", async ({ page }) => {
+  const email = `nonconfirme.${unique()}@tamurt.test`;
+  await page.goto("/inscription");
+  await page.getByLabel("Prénom").fill("Nadia");
+  await page.getByLabel("Nom", { exact: true }).fill("Test");
+  await page.getByLabel("Adresse email").fill(email);
+  await page.getByLabel("Téléphone").fill("+33612345678");
+  await page.getByLabel("Mot de passe", { exact: true }).fill("Nonconfirme-2026");
+  await page.getByLabel("Confirmation du mot de passe").fill("Nonconfirme-2026");
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button", { name: "Créer mon compte" }).click();
+  await expect(page).toHaveURL(/verification-email/);
+  await page.goto("/dev/mailbox");
+  await expect(page).toHaveURL(/\/dev\/mailbox/); // pas de redirection vers la connexion
+  await page.getByLabel("Adresse email").fill(email);
+  await page.getByRole("button", { name: "Afficher" }).click();
+  const link = page.locator("pre").filter({ hasText: /https?:\/\/\S+verify-email/ }).first();
+  await expect(link).toBeVisible();
+  const url = (await link.textContent())!.match(/(https?:\/\/\S+)/)![1]!;
+  await page.goto(url);
+  await expect(page).toHaveURL(/tableau-de-bord/);
+});
+
 test.describe("mobile", () => {
   test.use({ viewport: { width: 375, height: 740 }, isMobile: true, hasTouch: true });
 
