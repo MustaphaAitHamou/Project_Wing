@@ -5,7 +5,11 @@ import { q, signIn, unique } from "./helpers";
 
 /** Régressions d'interface : saisies numériques, mise en page des filtres, boutons, notifications, mobile. */
 
-const box = async (l: Locator) => (await l.boundingBox())!;
+/** Position d'un élément, après avoir attendu qu'il soit affiché (boundingBox n'attend pas la visibilité). */
+const box = async (l: Locator) => {
+  await expect(l).toBeVisible();
+  return (await l.boundingBox())!;
+};
 
 test.describe("interface", () => {
   test("E1 : les champs prix et poids des filtres refusent les lettres", async ({ page }) => {
