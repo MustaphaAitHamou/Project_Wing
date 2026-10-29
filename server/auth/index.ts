@@ -15,7 +15,8 @@ export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL ?? env.APP_URL,
   secret: env.BETTER_AUTH_SECRET,
   database: prismaAdapter(db, { provider: "postgresql" }),
-  trustedOrigins: [env.APP_URL],
+  // Sur une prévisualisation Vercel (protégée), accepte aussi les adresses du déploiement et de la branche.
+  trustedOrigins: [env.APP_URL, ...(process.env.VERCEL_ENV === "preview" ? [process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL].filter(Boolean).map((h) => `https://${h}`) : [])],
   user: {
     // Seuls ces champs sont acceptés à l'inscription. `role` et `status` n'en font
     // jamais partie : ils ne peuvent pas être définis par l'utilisateur.
