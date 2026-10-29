@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { ArrowLeft, ArrowRight, Check, ImagePlus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox, Field, Input, Select, Textarea } from "@/components/ui/input";
+import { Checkbox, Field, Input, NumberInput, Select, Textarea } from "@/components/ui/input";
 import { Alert } from "@/components/ui/misc";
 import { CityCombobox, type CityOption } from "@/components/marketplace/city-combobox";
 import { cn, toDateInput } from "@/lib/utils";
@@ -151,14 +151,14 @@ export function ParcelWizard({ categories, rateBps, feeModel, maxWeightKg, initi
             </Field>
             {category?.requiresReview && <Alert tone="warning" className="sm:col-span-2">Cette catégorie est réglementée : votre annonce sera vérifiée par notre équipe avant publication.</Alert>}
             <Field id="description" label="Description précise du contenu" className="sm:col-span-2" hint="Le voyageur doit savoir exactement ce qu'il transporte." error={err("description")?.message}><Textarea rows={4} {...register("description")} /></Field>
-            <Field id="weightGrams" label="Poids (kg)" hint={`Maximum ${maxWeightKg} kg`} error={err("weightGrams")?.message}><Input type="number" inputMode="decimal" step="0.1" min="0.1" {...register("weightGrams")} /></Field>
-            <Field id="quantity" label="Nombre de colis" error={err("quantity")?.message}><Input type="number" inputMode="numeric" min="1" max="50" {...register("quantity")} /></Field>
+            <Field id="weightGrams" label="Poids (kg)" hint={`Maximum ${maxWeightKg} kg`} error={err("weightGrams")?.message}><NumberInput decimals={1} placeholder="ex. 4" {...register("weightGrams")} /></Field>
+            <Field id="quantity" label="Nombre de colis" error={err("quantity")?.message}><NumberInput decimals={0} {...register("quantity")} /></Field>
             <div className="grid grid-cols-3 gap-3 sm:col-span-2">
-              <Field id="lengthCm" label="Longueur (cm)" error={err("lengthCm")?.message}><Input type="number" inputMode="numeric" min="1" {...register("lengthCm")} /></Field>
-              <Field id="widthCm" label="Largeur (cm)" error={err("widthCm")?.message}><Input type="number" inputMode="numeric" min="1" {...register("widthCm")} /></Field>
-              <Field id="heightCm" label="Hauteur (cm)" error={err("heightCm")?.message}><Input type="number" inputMode="numeric" min="1" {...register("heightCm")} /></Field>
+              <Field id="lengthCm" label="Longueur (cm)" error={err("lengthCm")?.message}><NumberInput decimals={0} {...register("lengthCm")} /></Field>
+              <Field id="widthCm" label="Largeur (cm)" error={err("widthCm")?.message}><NumberInput decimals={0} {...register("widthCm")} /></Field>
+              <Field id="heightCm" label="Hauteur (cm)" error={err("heightCm")?.message}><NumberInput decimals={0} {...register("heightCm")} /></Field>
             </div>
-            <Field id="declaredValue" label="Valeur déclarée (€)" hint="Valeur réelle du contenu. Aucune assurance n'est incluse." error={err("declaredValue")?.message}><Input inputMode="decimal" placeholder="ex. 120" {...register("declaredValue")} /></Field>
+            <Field id="declaredValue" label="Valeur déclarée (€)" hint="Valeur réelle du contenu. Aucune assurance n'est incluse." error={err("declaredValue")?.message}><NumberInput placeholder="ex. 120" {...register("declaredValue")} /></Field>
             <label className="flex items-center gap-3 self-end rounded-lg border px-3 py-3 text-sm"><Checkbox {...register("isFragile")} />Colis fragile</label>
             <Field id="specialConditions" label="Conditions particulières" optional className="sm:col-span-2" error={err("specialConditions")?.message}><Textarea rows={2} {...register("specialConditions")} /></Field>
             <div className="grid gap-2 sm:col-span-2">
@@ -198,7 +198,7 @@ export function ParcelWizard({ categories, rateBps, feeModel, maxWeightKg, initi
 
         {step === 3 && (
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field id="budget" label="Budget proposé (€)" hint="Prix que vous êtes prêt à payer pour le transport." error={err("budget")?.message}><Input inputMode="decimal" placeholder="ex. 40" {...register("budget")} /></Field>
+            <Field id="budget" label="Budget proposé (€)" hint="Prix que vous êtes prêt à payer pour le transport." error={err("budget")?.message}><NumberInput placeholder="ex. 40" {...register("budget")} /></Field>
             <Field id="currency" label="Devise"><Select {...register("currency")}><option value="EUR">Euro (€)</option></Select></Field>
             <div className="grid gap-2 rounded-xl bg-muted p-4 text-sm sm:col-span-2">
               <p className="font-semibold">Estimation</p>

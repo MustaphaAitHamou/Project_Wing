@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Check, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Field, Input, Select, Textarea } from "@/components/ui/input";
+import { Field, NumberInput, Select, Textarea } from "@/components/ui/input";
 import { ConfirmAction } from "@/components/ui/confirm-action";
 import { useAction } from "@/lib/hooks/use-action";
 import { acceptProposalAction, createProposalAction, rejectProposalAction, withdrawProposalAction } from "./actions";
@@ -53,7 +53,7 @@ export function ProposeDialog({ mode, fixedId, options, suggestedPrice, triggerL
             <Select value={choice} onChange={(e) => { setChoice(e.target.value); const s2 = options.find((o) => o.id === e.target.value)?.suggested; if (s2) setPrice(String(s2 / 100)); }}>{options.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}</Select>
           </Field>
           <Field id="proposal-price" label="Prix du transport (€)" hint="Une commission de plateforme s'applique selon les conditions affichées sur la page Tarifs." error={create.fieldErrors.price?.[0]}>
-            <Input inputMode="decimal" value={price} onChange={(e) => setPrice(e.target.value)} />
+            <NumberInput value={price} onChange={(e) => setPrice(e.target.value)} />
           </Field>
           <Field id="proposal-message" label="Message" optional error={create.fieldErrors.message?.[0]}>
             <Textarea rows={3} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Présentez-vous, précisez où et quand récupérer le colis…" />

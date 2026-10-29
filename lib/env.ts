@@ -56,8 +56,9 @@ const schema = z
     req(v.PAYMENT_PROVIDER === "stripe", ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"], "PAYMENT_PROVIDER=stripe");
     req(v.KYC_PROVIDER === "stripe_identity", ["STRIPE_SECRET_KEY", "STRIPE_IDENTITY_WEBHOOK_SECRET"], "KYC_PROVIDER=stripe_identity");
     req(v.STORAGE_DRIVER === "s3", ["S3_BUCKET", "S3_ACCESS_KEY_ID", "S3_SECRET_ACCESS_KEY"], "STORAGE_DRIVER=s3");
-    // Les simulateurs locaux sont interdits en production.
-    if (v.NODE_ENV === "production" && process.env.E2E_TEST_MODE !== "true") {
+    // Les simulateurs locaux sont interdits en production. Vérifié au démarrage du serveur,
+    // pas pendant `next build` : le build (CI, Vercel) ne reçoit pas forcément les secrets d'exécution.
+    if (v.NODE_ENV === "production" && process.env.E2E_TEST_MODE !== "true" && process.env.NEXT_PHASE !== "phase-production-build") {
       if (v.PAYMENT_PROVIDER === "local_sandbox")
         ctx.addIssue({ code: "custom", path: ["PAYMENT_PROVIDER"], message: "Le simulateur de paiement local est interdit en production" });
       if (v.KYC_PROVIDER === "local_sandbox")

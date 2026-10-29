@@ -36,7 +36,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export function Button({ className, variant, size, asChild, loading, children, disabled, ...props }: ButtonProps) {
   const Comp = asChild ? Slot.Root : "button";
   return (
-    <Comp className={cn(buttonVariants({ variant, size }), className)} disabled={disabled || loading} aria-busy={loading || undefined} {...props}>
+    <Comp data-slot="button" className={cn(buttonVariants({ variant, size }), className)} disabled={disabled || loading} aria-busy={loading || undefined} {...props}>
       {asChild ? children : (
         <>
           {loading && <Loader2 className="animate-spin" aria-hidden />}

@@ -5,7 +5,7 @@ import { useForm, type FieldPath } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Checkbox, Field, Input, Select, Textarea } from "@/components/ui/input";
+import { Checkbox, Field, Input, NumberInput, Select, Textarea } from "@/components/ui/input";
 import { Alert } from "@/components/ui/misc";
 import { CityCombobox, type CityOption } from "@/components/marketplace/city-combobox";
 import { TRANSPORT_MODES, TRANSPORT_MODE_LABELS } from "@/features/shared/schemas";
@@ -56,10 +56,10 @@ export function TripForm({ rateBps, feeModel, initial }: { rateBps: number; feeM
           <Select {...register("transportMode")}>{TRANSPORT_MODES.map((m) => <option key={m} value={m}>{TRANSPORT_MODE_LABELS[m]}</option>)}</Select>
         </Field>
         <label className="flex items-center gap-3 self-end rounded-lg border px-3 py-3 text-sm"><Checkbox {...register("acceptsFragile")} />J&apos;accepte les colis fragiles</label>
-        <Field id="capacityGrams" label="Poids disponible (kg)" error={errors.capacityGrams?.message}><Input type="number" inputMode="decimal" step="0.5" min="0.5" {...register("capacityGrams")} /></Field>
-        <Field id="capacityVolumeL" label="Volume disponible (litres)" optional hint="Une valise cabine fait environ 40 L." error={errors.capacityVolumeL?.message}><Input type="number" inputMode="numeric" min="1" {...register("capacityVolumeL")} /></Field>
-        <Field id="pricePerKg" label="Prix demandé par kg (€)" error={errors.pricePerKg?.message}><Input inputMode="decimal" placeholder="ex. 8" {...register("pricePerKg")} /></Field>
-        <Field id="minPrice" label="Prix minimum par colis (€)" optional error={errors.minPrice?.message}><Input inputMode="decimal" placeholder="ex. 15" {...register("minPrice")} /></Field>
+        <Field id="capacityGrams" label="Poids disponible (kg)" error={errors.capacityGrams?.message}><NumberInput decimals={1} placeholder="ex. 10" {...register("capacityGrams")} /></Field>
+        <Field id="capacityVolumeL" label="Volume disponible (litres)" optional hint="Une valise cabine fait environ 40 L." error={errors.capacityVolumeL?.message}><NumberInput decimals={0} {...register("capacityVolumeL")} /></Field>
+        <Field id="pricePerKg" label="Prix demandé par kg (€)" error={errors.pricePerKg?.message}><NumberInput placeholder="ex. 8" {...register("pricePerKg")} /></Field>
+        <Field id="minPrice" label="Prix minimum par colis (€)" optional error={errors.minPrice?.message}><NumberInput placeholder="ex. 15" {...register("minPrice")} /></Field>
       </div>
       {example && (
         <div className="rounded-xl bg-muted p-4 text-sm">

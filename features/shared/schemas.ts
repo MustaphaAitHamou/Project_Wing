@@ -34,5 +34,6 @@ export const SUPPORTED_CURRENCIES = ["EUR"] as const;
 export const TRANSPORT_MODES = ["PLANE", "CAR", "FERRY", "TRAIN", "BUS", "OTHER"] as const;
 export const TRANSPORT_MODE_LABELS: Record<(typeof TRANSPORT_MODES)[number], string> = { PLANE: "Avion", CAR: "Voiture", FERRY: "Ferry", TRAIN: "Train", BUS: "Bus", OTHER: "Autre" };
 
+/** Poids saisi en kg ("4,5" ou "4.5") → grammes. */
 export const kgInput = (label: string, maxKg = 100) =>
-  z.coerce.number({ message: `${label} : nombre attendu` }).min(0.1, `${label} : minimum 0,1 kg`).max(maxKg, `${label} : maximum ${maxKg} kg`).transform((kg) => Math.round(kg * 1000));
+  z.preprocess((v) => (typeof v === "string" ? v.trim().replace(",", ".") : v), z.coerce.number({ message: `${label} : nombre attendu` }).min(0.1, `${label} : minimum 0,1 kg`).max(maxKg, `${label} : maximum ${maxKg} kg`)).transform((kg) => Math.round(kg * 1000));

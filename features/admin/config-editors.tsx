@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Checkbox, Field, Input, Select } from "@/components/ui/input";
+import { Checkbox, Field, Input, NumberInput, Select } from "@/components/ui/input";
 import { useAction } from "@/lib/hooks/use-action";
 import { TRANSPORT_MODES, TRANSPORT_MODE_LABELS } from "@/features/shared/schemas";
 import { createCorridorAction, updateCategoryOrCreate, updateCorridorAction, updateCountryAction, updateSettingAction } from "./config-actions-bridge";
@@ -52,7 +52,7 @@ export function CorridorEditor({ corridor, readOnly }: { corridor: { id: string;
       <p className="font-semibold">{corridor.label}</p>
       <div className="grid gap-3 sm:grid-cols-2">
         <Field id={`st-${v.id}`} label="Statut"><Select value={v.status} disabled={readOnly} onChange={(e) => setV({ ...v, status: e.target.value })}><option value="DISABLED">Fermé</option><option value="TEST_ONLY">Test uniquement</option><option value="LIVE">Ouvert (LIVE)</option></Select></Field>
-        <Field id={`mw-${v.id}`} label="Poids max par colis (kg)"><Input type="number" disabled={readOnly} value={v.maxWeightKg} onChange={(e) => setV({ ...v, maxWeightKg: Number(e.target.value) })} /></Field>
+        <Field id={`mw-${v.id}`} label="Poids max par colis (kg)"><NumberInput decimals={0} disabled={readOnly} value={v.maxWeightKg} onChange={(e) => setV({ ...v, maxWeightKg: Number(e.target.value) })} /></Field>
       </div>
       <ModesPicker value={v.allowedModes} disabled={readOnly} onChange={(m) => setV({ ...v, allowedModes: m })} />
       <Field id={`nt-${v.id}`} label="Notes"><Input disabled={readOnly} value={v.notes} onChange={(e) => setV({ ...v, notes: e.target.value })} /></Field>
@@ -100,7 +100,7 @@ export function CategoryEditor({ category, readOnly }: { category: { id: string;
       <div className="mt-3 grid gap-3">
         <div className="grid gap-3 sm:grid-cols-[1fr_8rem]">
           <Field id={`cn-${v.id}`} label="Nom"><Input disabled={readOnly} value={v.name} onChange={(e) => setV({ ...v, name: e.target.value })} /></Field>
-          <Field id={`co-${v.id}`} label="Ordre"><Input type="number" disabled={readOnly} value={v.sortOrder} onChange={(e) => setV({ ...v, sortOrder: Number(e.target.value) })} /></Field>
+          <Field id={`co-${v.id}`} label="Ordre"><NumberInput decimals={0} disabled={readOnly} value={v.sortOrder} onChange={(e) => setV({ ...v, sortOrder: Number(e.target.value) })} /></Field>
         </div>
         <Field id={`cd-${v.id}`} label="Description"><Input disabled={readOnly} value={v.description} onChange={(e) => setV({ ...v, description: e.target.value })} /></Field>
         <div className="flex flex-wrap gap-4 text-sm">

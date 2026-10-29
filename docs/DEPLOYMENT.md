@@ -34,9 +34,24 @@ Déploiement bleu/vert ou rolling ; migrations additives d'abord (compatibles av
 `.github/workflows/ci.yml` : installation, audit des dépendances, lint, typecheck, tests (PostgreSQL de service), build, E2E. Le déploiement continu n'est pas configuré (à brancher sur l'hébergeur choisi après validation).
 
 ## Vercel (configuration fournie : `vercel.json`)
-- Migrations : appliquées automatiquement au build **de production uniquement** (`VERCEL_ENV=production`), jamais par les déploiements de prévisualisation.
-- Crons Vercel : `/api/cron/jobs` et `/api/cron/maintenance` une fois par jour (limite du plan Hobby). Vercel envoie `Authorization: Bearer $CRON_SECRET` automatiquement si `CRON_SECRET` est défini. Les tâches sont aussi traitées juste après chaque requête (`after()`).
-- Définir `INLINE_JOB_WORKER=false` (pas de processus persistant en serverless).
-- Temps réel : les fonctions ont une durée limitée ; la messagerie bascule sur le rafraîchissement périodique (20 s).
-- Fichiers : le disque Vercel n'est pas persistant. Pour une démo, `STORAGE_LOCAL_DIR=/tmp/storage` (photos perdues entre deux invocations) ; en vrai, S3/R2.
-- Démo sans prestataires réels : `E2E_TEST_MODE=true` active les simulateurs (paiement, KYC, pages /dev). À réserver à un déploiement protégé (Vercel Deployment Protection), jamais au site public.
+
+### Fonctionnement
+- **Build** : `pnpm build` ne vérifie pas les prestataires de production (clés Stripe, S3…) ; c'est le **serveur** qui refuse de démarrer en production si un simulateur est actif. Un déploiement de production sans vrais prestataires répond donc en erreur 500 : c'est voulu.
+- **Migrations** : appliquées au build de production (`VERCEL_ENV=production`), ou sur un autre environnement si `RUN_MIGRATIONS=true` y est défini (base dédiée uniquement).
+- **Données de référence** (pays, villes, catégories, corridors) : une seule fois par base, depuis votre poste : `DATABASE_URL="<url>" pnpm db:seed`.
+- **Crons** : `/api/cron/jobs` et `/api/cron/maintenance` une fois par jour (limite du plan Hobby). Vercel envoie `Authorization: Bearer $CRON_SECRET` si `CRON_SECRET` est défini. Les tâches sont aussi traitées juste après chaque requête (`after()`).
+- **Temps réel** : durée des fonctions limitée ; la messagerie bascule sur le rafraîchissement périodique (20 s).
+- **Fichiers** : disque non persistant. Démo : `STORAGE_LOCAL_DIR=/tmp/storage` (photos perdues entre deux invocations) ; en vrai : S3/R2.
+
+### Démo protégée (sans prestataires réels)
+Les simulateurs (paiement, KYC) et la boîte mail de test `/dev/mailbox` exposent les codes et liens de tous les utilisateurs : **jamais sur une URL publique**. Utiliser un déploiement de **prévisualisation** (protégé par défaut par Vercel Authentication : seuls les membres de l'équipe Vercel y accèdent).
+1. Importer le dépôt GitHub dans Vercel (framework détecté : Next.js, configuration lue dans `vercel.json`).
+2. Créer une base PostgreSQL (ex. Neon via Vercel Marketplace, région UE). Utiliser une base **dédiée à la démo**.
+3. Variables d'environnement, portée **Preview** uniquement :
+   `DATABASE_URL`, `BETTER_AUTH_SECRET` (32+ caractères aléatoires), `OTP_PEPPER` (16+), `CRON_SECRET` (12+), `APP_URL` et `BETTER_AUTH_URL` (URL de la branche de démo), `E2E_TEST_MODE=true`, `ALLOW_LOCAL_STORAGE_IN_PRODUCTION=true`, `STORAGE_LOCAL_DIR=/tmp/storage`, `INLINE_JOB_WORKER=false`, `RUN_MIGRATIONS=true`.
+4. Depuis votre poste : `DATABASE_URL="<url>" pnpm db:deploy` puis `DATABASE_URL="<url>" pnpm db:seed`.
+5. Pousser une branche `demo` : Vercel en fait un déploiement de prévisualisation protégé.
+6. Vérifier dans Settings → Deployment Protection que Vercel Authentication est active.
+
+### Production réelle
+Variables de portée **Production** : celles de `.env.example` avec `PAYMENT_PROVIDER=stripe`, `KYC_PROVIDER=stripe_identity`, `EMAIL_PROVIDER=resend`, `STORAGE_DRIVER=s3`, `ADMIN_REQUIRE_2FA=true`, `INLINE_JOB_WORKER=false`. **Jamais `E2E_TEST_MODE`, `RATE_LIMIT_RELAXED` ni `SEED_DEMO`.** Ne pas lancer avant la validation de [PRODUCTION_CHECKLIST.md](PRODUCTION_CHECKLIST.md).

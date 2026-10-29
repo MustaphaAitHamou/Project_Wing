@@ -1,6 +1,6 @@
 # Avancement
 
-Dernière mise à jour : 28/10/2026.
+Dernière mise à jour : 29/10/2026.
 
 | Phase | État | Détail |
 |---|---|---|
@@ -15,14 +15,14 @@ Dernière mise à jour : 28/10/2026.
 | 9. Qualité et sécurité | ✔ | Voir « Tests » ci-dessous ; audit des dépendances propre. |
 | 10. Préparation production | Partiel | Documentation, CI, checklist ✔ ; Sentry, mesures Lighthouse en préproduction, déploiement : à faire par le propriétaire. |
 
-## Tests (dernier passage, 28/10/2026)
+## Tests (dernier passage, 29/10/2026)
 | Suite | Résultat |
 |---|---|
-| Unitaires (Vitest) : commissions, montants, machine à états, matching, OTP, normalisation, schémas | 32/32 ✔ |
+| Unitaires (Vitest) : commissions, montants, machine à états, matching, OTP, normalisation, schémas, saisies numériques, redirections, configuration | 45/45 ✔ |
 | Intégration (Vitest + PostgreSQL) : cycle complet, IDOR, OTP, webhooks, double paiement, concurrence, capacité, KYC, catégories, corridors, annulation/remboursement, litige | 32/32 ✔ |
-| E2E (Playwright, build de production) : scénarios A, B, C, D | 19/19 ✔ |
+| E2E (Playwright, build de production) : scénarios A, B, C, D + interface (saisies numériques, filtres, boutons, notifications, mobile sans débordement) | 32/32 ✔ |
 | TypeScript strict | 0 erreur |
-| ESLint | 0 erreur, 5 avertissements |
+| ESLint | 0 erreur, 3 avertissements (bibliothèque React Hook Form non optimisable par le compilateur React, navigation Better Auth) |
 | `pnpm audit` | aucune vulnérabilité |
 | Build de production | ✔ |
 

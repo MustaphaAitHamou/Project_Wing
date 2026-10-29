@@ -24,7 +24,7 @@ export function Alert({ tone = "info", title, children, className, action }: { t
       <Icon className="mt-0.5 size-5 shrink-0" aria-hidden />
       <div className="grid min-w-0 flex-1 gap-1">
         {title && <p className="font-semibold">{title}</p>}
-        {children && <div className="leading-relaxed [&_a]:underline">{children}</div>}
+        {children && <div className="leading-relaxed [&_a:not([data-slot=button])]:underline">{children}</div>}
         {action && <div className="mt-2">{action}</div>}
       </div>
     </div>

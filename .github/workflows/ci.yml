@@ -30,9 +30,9 @@ jobs:
       OTP_PEPPER: ci-only-otp-pepper-0123456789
       CRON_SECRET: ci-only-cron-secret
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: pnpm
@@ -48,15 +48,18 @@ jobs:
           cp .env.test.example .env.test
       - name: Tests unitaires et d'intégration
         run: pnpm test
+      # Le build ne valide pas les prestataires de production (vérifiés au démarrage du serveur).
       - name: Build de production
         run: pnpm build
       - name: Tests end-to-end
         run: |
-          npx playwright install --with-deps chromium
+          pnpm exec playwright install --with-deps chromium
           DATABASE_URL=postgresql://postgres:postgres@localhost:5432/tamurt_e2e?schema=public pnpm db:deploy
           pnpm test:e2e
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: playwright-report
           path: /tmp/tamurt-e2e
+          if-no-files-found: ignore
+          retention-days: 7

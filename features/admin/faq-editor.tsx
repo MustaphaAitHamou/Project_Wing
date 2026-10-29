@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Checkbox, Field, Input, Select, Textarea } from "@/components/ui/input";
+import { Checkbox, Field, Input, NumberInput, Select, Textarea } from "@/components/ui/input";
 import { useAction } from "@/lib/hooks/use-action";
 import { deleteFaqAction, upsertFaqAction } from "./actions";
 
@@ -20,7 +20,7 @@ export function FaqEditor({ item }: { item: Item | null }) {
         <Field id={`a-${v.id}`} label="Réponse" error={save.fieldErrors.answer?.[0]}><Textarea rows={4} value={v.answer} onChange={(e) => setV({ ...v, answer: e.target.value })} /></Field>
         <div className="flex flex-wrap items-end gap-3">
           <Field id={`c-${v.id}`} label="Rubrique"><Select value={v.category} onChange={(e) => setV({ ...v, category: e.target.value })}><option value="general">Général</option><option value="expediteur">Expéditeurs</option><option value="voyageur">Voyageurs</option><option value="securite">Sécurité</option></Select></Field>
-          <Field id={`o-${v.id}`} label="Ordre"><Input type="number" className="w-24" value={v.sortOrder} onChange={(e) => setV({ ...v, sortOrder: Number(e.target.value) })} /></Field>
+          <Field id={`o-${v.id}`} label="Ordre"><NumberInput decimals={0} className="w-24" value={v.sortOrder} onChange={(e) => setV({ ...v, sortOrder: Number(e.target.value) })} /></Field>
           <label className="flex h-11 items-center gap-2 text-sm"><Checkbox checked={v.isPublished} onChange={(e) => setV({ ...v, isPublished: e.target.checked })} />Publiée</label>
         </div>
         <div className="flex gap-2">

@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Checkbox, Field, Input, Select, Textarea } from "@/components/ui/input";
+import { Checkbox, Field, NumberInput, Select, Textarea } from "@/components/ui/input";
 import { useAction } from "@/lib/hooks/use-action";
 import { formatMoney } from "@/lib/domain/money";
 import { disputeStaffMessageAction, resolveDisputeAction } from "./actions";
@@ -35,7 +35,7 @@ export function DisputeAdminPanel({ disputeId, isAdmin, refundable }: { disputeI
               <option value="NO_ACTION">Sans suite : reprendre le parcours</option>
             </Select>
           </Field>
-          {resolution === "PARTIAL_REFUND" && <Field id="partial" label="Montant remboursé (€)" error={res.fieldErrors.refundAmount?.[0]}><Input inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value)} /></Field>}
+          {resolution === "PARTIAL_REFUND" && <Field id="partial" label="Montant remboursé (€)" error={res.fieldErrors.refundAmount?.[0]}><NumberInput value={amount} onChange={(e) => setAmount(e.target.value)} /></Field>}
           <Field id="decision" label="Motivation (visible des parties)" error={res.fieldErrors.note?.[0]}><Textarea rows={3} value={decision} onChange={(e) => setDecision(e.target.value)} /></Field>
           <Button type="submit" variant="destructive" className="w-fit" loading={res.pending}>Appliquer la décision</Button>
           <p className="text-xs text-muted-foreground">Les remboursements sont exécutés par le prestataire de paiement. La décision est journalisée.</p>

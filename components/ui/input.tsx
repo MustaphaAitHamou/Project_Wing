@@ -1,11 +1,32 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { sanitizeNumeric } from "@/lib/numeric";
 
 export const fieldBase =
-  "w-full rounded-lg border border-input bg-card px-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/80 transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring disabled:opacity-60 aria-invalid:border-destructive";
+  "w-full min-w-0 rounded-lg border border-input bg-card px-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/80 transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring disabled:opacity-60 aria-invalid:border-destructive";
 
 export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input className={cn(fieldBase, "h-11", className)} {...props} />;
+}
+
+/**
+ * Champ numérique (prix, poids, dimensions) : refuse les lettres et autres caractères dès la frappe.
+ * `decimals={0}` pour un entier. Compatible avec `register()` de React Hook Form et les champs contrôlés.
+ */
+export function NumberInput({ decimals = 2, onChange, ...props }: Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "inputMode"> & { decimals?: number }) {
+  return (
+    <Input
+      type="text"
+      inputMode={decimals > 0 ? "decimal" : "numeric"}
+      autoComplete="off"
+      {...props}
+      onChange={(e) => {
+        const clean = sanitizeNumeric(e.target.value, decimals);
+        if (clean !== e.target.value) e.target.value = clean;
+        onChange?.(e);
+      }}
+    />
+  );
 }
 
 export function Textarea({ className, ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {

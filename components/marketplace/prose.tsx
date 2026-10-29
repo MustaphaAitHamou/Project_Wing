@@ -15,7 +15,8 @@ export function ProsePage({ title, intro, children, updated, draftLegal }: { tit
           <p><strong>Document de travail non validé juridiquement.</strong> Sa structure est prête, mais les passages signalés « [À VALIDER] » doivent être relus et complétés par un professionnel du droit avant le lancement commercial.</p>
         </div>
       )}
-      <div className={cn("grid gap-4 leading-relaxed [&_h2]:mt-6 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mt-3 [&_h3]:text-lg [&_h3]:font-semibold [&_ul]:grid [&_ul]:list-disc [&_ul]:gap-1.5 [&_ul]:pl-6 [&_ol]:grid [&_ol]:list-decimal [&_ol]:gap-1.5 [&_ol]:pl-6 [&_a]:font-medium [&_a]:text-primary [&_a]:underline [&_mark]:rounded [&_mark]:bg-warning-soft [&_mark]:px-1 [&_mark]:text-foreground")}>{children}</div>
+      {/* Styles de texte riche : les liens stylés en bouton (data-slot="button") gardent leur apparence. */}
+      <div className={cn("grid gap-4 leading-relaxed [&_h2]:mt-6 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mt-3 [&_h3]:text-lg [&_h3]:font-semibold [&_ul]:grid [&_ul]:list-disc [&_ul]:gap-1.5 [&_ul]:pl-6 [&_ol]:grid [&_ol]:list-decimal [&_ol]:gap-1.5 [&_ol]:pl-6 [&_a:not([data-slot=button])]:font-medium [&_a:not([data-slot=button])]:text-primary [&_a:not([data-slot=button])]:underline [&_mark]:rounded [&_mark]:bg-warning-soft [&_mark]:px-1 [&_mark]:text-foreground")}>{children}</div>
     </article>
   );
 }
