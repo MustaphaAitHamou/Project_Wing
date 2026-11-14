@@ -24,7 +24,7 @@ export function SidebarNav({ counts }: { counts: { messages: number; notificatio
               <Link key={it.href} href={it.href} aria-current={active ? "page" : undefined} className={cn("flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&_svg]:size-4", active && "bg-primary-soft text-primary-soft-foreground hover:bg-primary-soft")}>
                 <it.icon aria-hidden />
                 <span className="flex-1">{it.label}</span>
-                {n > 0 && <span className="rounded-full bg-destructive px-1.5 text-[11px] font-bold text-white tabular">{n > 99 ? "99+" : n}</span>}
+                {n > 0 && <span className="rounded-full bg-destructive px-1.5 text-[11px] font-bold text-destructive-foreground tabular">{n > 99 ? "99+" : n}</span>}
               </Link>
             );
           })}

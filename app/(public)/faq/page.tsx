@@ -3,7 +3,7 @@ import { db } from "@/server/db/client";
 import { ProsePage } from "@/components/marketplace/prose";
 import { FaqList } from "@/components/marketplace/faq-list";
 
-export const metadata: Metadata = { title: "Questions fréquentes", description: "Toutes les réponses sur l'envoi et le transport de colis avec Tamurt Sending.", alternates: { canonical: "/faq" } };
+export const metadata: Metadata = { title: "Questions fréquentes", description: "Toutes les réponses sur l'envoi et le transport de colis avec Tamurt Transport.", alternates: { canonical: "/faq" } };
 const CATS: Record<string, string> = { general: "Général", expediteur: "Expéditeurs", voyageur: "Voyageurs", securite: "Sécurité" };
 
 export default async function FaqPage() {

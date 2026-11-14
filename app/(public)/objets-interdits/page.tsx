@@ -3,7 +3,7 @@ import { db } from "@/server/db/client";
 import { ProsePage, TODO } from "@/components/marketplace/prose";
 import { TRANSPORT_MODE_LABELS } from "@/features/shared/schemas";
 
-export const metadata: Metadata = { title: "Objets interdits et réglementés", description: "Ce qui ne peut pas être envoyé avec Tamurt Sending.", alternates: { canonical: "/objets-interdits" } };
+export const metadata: Metadata = { title: "Objets interdits et réglementés", description: "Ce qui ne peut pas être envoyé avec Tamurt Transport.", alternates: { canonical: "/objets-interdits" } };
 
 export default async function ProhibitedPage() {
   const cats = await db.parcelCategory.findMany({ where: { isActive: true }, orderBy: { sortOrder: "asc" } });

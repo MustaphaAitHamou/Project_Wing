@@ -46,7 +46,7 @@ export async function openDispute(userId: string, input: z.output<typeof openDis
     await tx.disputeEvent.create({ data: { disputeId: d.id, actorId: userId, type: "opened", note: input.description } });
     await addDeliveryEvent(tx, booking.id, "INCIDENT_REPORTED", userId, { disputeId: d.id, type: input.type });
     const other = actor === "SENDER" ? booking.travelerId : booking.senderId;
-    await notify(tx, { userId: other, type: "DISPUTE_OPENED", title: `Litige ouvert — ${booking.reference}`, body: `${DISPUTE_TYPE_LABELS[input.type]}. L'équipe Tamurt Sending va examiner la situation.`, link: `/tableau-de-bord/litiges/${d.id}` });
+    await notify(tx, { userId: other, type: "DISPUTE_OPENED", title: `Litige ouvert — ${booking.reference}`, body: `${DISPUTE_TYPE_LABELS[input.type]}. L'équipe Tamurt Transport va examiner la situation.`, link: `/tableau-de-bord/litiges/${d.id}` });
     return d;
   });
 }

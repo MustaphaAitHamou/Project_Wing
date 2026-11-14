@@ -9,7 +9,7 @@ export default async function PricingPage() {
   const [rate, model] = await Promise.all([getSetting("commission.rateBps"), getSetting("commission.feeModel")]);
   const ex = computeFees(5000, rate, model);
   return (
-    <ProsePage title="Tarifs" intro="L'inscription et la publication d'annonces sont gratuites. Tamurt Sending se rémunère par une commission sur chaque transport effectué.">
+    <ProsePage title="Tarifs" intro="L'inscription et la publication d'annonces sont gratuites. Tamurt Transport se rémunère par une commission sur chaque transport effectué.">
       <h2>Le prix du transport</h2>
       <p>Il est librement fixé entre l&apos;expéditeur et le voyageur : le voyageur indique un tarif au kilo, l&apos;expéditeur un budget, et la proposition acceptée fixe le prix définitif. Il ne peut plus changer ensuite.</p>
       <h2>La commission de la plateforme</h2>
@@ -18,7 +18,7 @@ export default async function PricingPage() {
         <p className="mb-3 font-semibold">Exemple pour un transport à {formatMoney(ex.transportPrice, "EUR")}</p>
         <dl className="grid gap-1.5 tabular">
           <div className="flex justify-between"><dt>L&apos;expéditeur paie</dt><dd className="font-semibold">{formatMoney(ex.totalCharged, "EUR")}</dd></div>
-          <div className="flex justify-between"><dt>Commission Tamurt Sending</dt><dd>{formatMoney(ex.platformFee, "EUR")}</dd></div>
+          <div className="flex justify-between"><dt>Commission Tamurt Transport</dt><dd>{formatMoney(ex.platformFee, "EUR")}</dd></div>
           <div className="flex justify-between"><dt>Le voyageur reçoit (net estimé)</dt><dd className="font-semibold">{formatMoney(ex.travelerNet, "EUR")}</dd></div>
         </dl>
       </div>

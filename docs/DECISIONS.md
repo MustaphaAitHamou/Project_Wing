@@ -41,3 +41,12 @@ Prisma bloque `migrate reset` lorsqu'il est lancé par un agent IA, sans consent
 
 ### ADR-014 : Composants UI maison (style shadcn) au lieu du CLI shadcn
 Même approche (Radix + Tailwind + cva), écrits directement pour Tailwind 4 et React 19, sans dépendre du registre en ligne pendant le développement.
+
+### ADR-015 : Identité Tamurt Transport (DA Tamurt Services)
+L'application s'appelle désormais **Tamurt Transport** (le suffixe « -ing » est abandonné pour toute la famille). Elle applique la DA commune de Tamurt Services :
+- **Jetons** dans `app/globals.css`. Les noms de variables existants sont conservés pour ne pas toucher aux composants. Sarcelle `#0c7a70` / `#5fd6c8` pour `primary`. Neutres chauds de la famille. Statuts de la DA (ok, attention, danger). `accent` prend le bleu « info » (`#1f58b0` / `#8fb6f5`) pour distinguer les statuts en mouvement du sarcelle de marque. `rating` donne l'or des étoiles. Le bandeau de marque, fixe dans les deux thèmes, va du sarcelle profond `#0a4f4a` au sarcelle `#0c7a70`. Il s'arrête avant le sarcelle vif, sur lequel un texte blanc courant tomberait sous 4,5:1.
+- **Police** : Signika (signalétique des gares et aéroports) via `next/font`. Elle n'a pas de police de repli ajustée, pour que Noto Sans prenne le relais sur ɛ et ɣ, absents de Signika. Noto Sans n'est pas préchargée et ne se télécharge que si une lettre manque.
+- **Boutons** : silhouette « flèche » pour les variantes pleines (`default`, `secondary`, `inverse`, `destructive`). Le fond vit dans `::before`, découpé par `clip-path`, si bien que l'anneau de focus n'est jamais rogné. Les variantes `outline`, `ghost` et `link` restent droites. Un bouton icône seule n'a pas de pointe.
+- **Bouton yaz** : le carré rouge de la famille, en haut à droite de l'en-tête, renvoie vers Tamurt Services. Il n'apparaît que si `TAMURT_SERVICES_URL` est renseignée, pour ne jamais afficher de lien mort.
+- **E-mails** : marque en texte (TAMURT rouge + Transport). Plusieurs clients mail bloquent les images SVG.
+

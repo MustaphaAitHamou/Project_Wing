@@ -17,6 +17,6 @@ const schema = z.object({
 export const sendContactAction = action(schema, async (d) => {
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   await rateLimit(`contact:${ip}`, 5, 3600);
-  const to = process.env.CONTACT_EMAIL ?? "contact@tamurt-sending.local";
+  const to = process.env.CONTACT_EMAIL ?? "contact@tamurt-transport.local";
   await enqueue(db, "email.send", { to, template: "contact", data: { name: d.name, email: d.email, subject: d.subject, message: d.message } });
 });

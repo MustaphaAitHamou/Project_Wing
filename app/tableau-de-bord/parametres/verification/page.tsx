@@ -24,7 +24,7 @@ export default async function VerificationPage() {
           <ol className="grid list-decimal gap-1 pl-5 text-muted-foreground">
             <li>Vous êtes redirigé vers notre prestataire de vérification ({provider === "stripe_identity" ? "Stripe Identity" : "simulateur de test"}).</li>
             <li>Vous photographiez une pièce d&apos;identité officielle puis prenez un selfie.</li>
-            <li>Le prestataire nous transmet uniquement le résultat. Tamurt Sending ne stocke pas vos documents.</li>
+            <li>Le prestataire nous transmet uniquement le résultat. Tamurt Transport ne stocke pas vos documents.</li>
           </ol>
           <StartKycButton label={status === "PENDING" ? "Relancer la vérification" : "Commencer la vérification"} />
         </div>

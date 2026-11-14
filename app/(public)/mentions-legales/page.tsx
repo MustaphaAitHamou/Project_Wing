@@ -11,7 +11,7 @@ export default function LegalNoticePage() {
       <h2>Hébergement</h2>
       <p><TODO>Nom, adresse et téléphone de l&apos;hébergeur retenu.</TODO></p>
       <h2>Propriété intellectuelle</h2>
-      <p>L&apos;identité visuelle, les textes et le code de Tamurt Sending sont la propriété de Tamurt Services. Les contenus publiés par les utilisateurs restent leur propriété ; ils accordent à Tamurt Services une licence d&apos;affichage limitée au fonctionnement du service.</p>
+      <p>L&apos;identité visuelle, les textes et le code de Tamurt Transport sont la propriété de Tamurt Services. Les contenus publiés par les utilisateurs restent leur propriété ; ils accordent à Tamurt Services une licence d&apos;affichage limitée au fonctionnement du service.</p>
       <h2>Médiation</h2>
       <p><TODO>Coordonnées du médiateur de la consommation.</TODO></p>
     </ProsePage>

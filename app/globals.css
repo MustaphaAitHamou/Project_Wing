@@ -4,62 +4,76 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Identité Tamurt Sending
- * - Vert « Djurdjura » : confiance, sérieux (couleur principale)
- * - Safran : chaleur, accent ponctuel (badges, mises en avant)
- * - Neutres légèrement teintés de vert
+ * Identité Tamurt Transport (DA Tamurt Services)
+ * - Sarcelle « de la traversée » : la couleur de l'app (actions, liens, marque).
+ * - Neutres chauds communs à toute la famille Tamurt.
+ * - Rouge Tamurt réservé au bouton yaz, le lien vers la maison mère.
+ * - « accent » prend le bleu « info » de la DA : statuts en mouvement, compteurs,
+ *   seconde série des graphiques. Il se distingue ainsi du sarcelle.
+ * - « rating » : l'or des étoiles d'avis, seule couleur hors marque.
+ * Contrastes vérifiés : texte ≥ 4,5:1 sur tous les fonds, aplats d'action ≥ 3:1.
  */
 :root {
-  --background: oklch(0.985 0.004 165);
-  --foreground: oklch(0.22 0.02 200);
-  --card: oklch(1 0 0);
+  --background: #f6f5f2;
+  --foreground: #1d1b19;
+  --card: #ffffff;
   --card-foreground: var(--foreground);
-  --muted: oklch(0.955 0.008 165);
-  --muted-foreground: oklch(0.47 0.02 200);
-  --border: oklch(0.9 0.01 165);
-  --input: oklch(0.86 0.012 165);
-  --ring: oklch(0.5 0.1 170);
-  --primary: oklch(0.43 0.085 172);
-  --primary-hover: oklch(0.38 0.08 172);
-  --primary-foreground: oklch(0.99 0.005 165);
-  --primary-soft: oklch(0.94 0.035 170);
-  --primary-soft-foreground: oklch(0.33 0.07 172);
-  --accent: oklch(0.79 0.14 75);
-  --accent-soft: oklch(0.96 0.04 85);
-  --accent-foreground: oklch(0.35 0.08 60);
-  --destructive: oklch(0.55 0.2 27);
-  --destructive-soft: oklch(0.96 0.03 25);
-  --success: oklch(0.52 0.12 150);
-  --success-soft: oklch(0.95 0.04 150);
-  --warning: oklch(0.6 0.14 70);
-  --warning-soft: oklch(0.96 0.05 85);
-  --radius: 0.875rem;
+  --muted: #ebe9e4;
+  --muted-foreground: #5c5852;
+  --border: #dedbd4;
+  --input: #8a857c;
+  --ring: #1d1b19;
+  --primary: #0c7a70;
+  --primary-hover: #0b6f66;
+  --primary-foreground: #ffffff;
+  --primary-soft: #dff5f1;
+  --primary-soft-foreground: #0b6b62;
+  --accent: #1f58b0;
+  --accent-soft: #e6eefb;
+  --accent-foreground: #1f58b0;
+  --destructive: #b8261a;
+  --destructive-foreground: #ffffff;
+  --destructive-soft: #fde9e7;
+  --success: #0b6e5b;
+  --success-soft: #e0f4ef;
+  --warning: #8a5300;
+  --warning-soft: #fff3d6;
+  --rating: #b87a00;
+  /* Fixes dans les deux thèmes : le bandeau de marque et le rouge de la famille. */
+  --brand-deep: #0a4f4a;
+  --brand-vif: #16a394;
+  --brand-on: #ffffff;
+  --tamurt-red: #e5162f;
+  --radius: 0.75rem;
 }
 
 .dark {
-  --background: oklch(0.17 0.012 200);
-  --foreground: oklch(0.95 0.008 165);
-  --card: oklch(0.21 0.014 200);
+  --background: #141312;
+  --foreground: #f4f1ec;
+  --card: #1f1d1b;
   --card-foreground: var(--foreground);
-  --muted: oklch(0.25 0.014 200);
-  --muted-foreground: oklch(0.72 0.015 190);
-  --border: oklch(0.3 0.015 200);
-  --input: oklch(0.36 0.016 200);
-  --ring: oklch(0.7 0.1 170);
-  --primary: oklch(0.72 0.11 170);
-  --primary-hover: oklch(0.77 0.1 170);
-  --primary-foreground: oklch(0.17 0.03 180);
-  --primary-soft: oklch(0.3 0.05 172);
-  --primary-soft-foreground: oklch(0.88 0.06 170);
-  --accent: oklch(0.8 0.13 78);
-  --accent-soft: oklch(0.32 0.05 75);
-  --accent-foreground: oklch(0.9 0.08 85);
-  --destructive: oklch(0.68 0.18 25);
-  --destructive-soft: oklch(0.3 0.06 25);
-  --success: oklch(0.72 0.13 150);
-  --success-soft: oklch(0.3 0.05 150);
-  --warning: oklch(0.8 0.13 80);
-  --warning-soft: oklch(0.32 0.05 80);
+  --muted: #2a2724;
+  --muted-foreground: #b5afa6;
+  --border: #35322e;
+  --input: #8a847b;
+  --ring: #f4f1ec;
+  --primary: #5fd6c8;
+  --primary-hover: #57c3b6;
+  --primary-foreground: #04231f;
+  --primary-soft: #0a2c29;
+  --primary-soft-foreground: #74ddd0;
+  --accent: #8fb6f5;
+  --accent-soft: #122444;
+  --accent-foreground: #8fb6f5;
+  --destructive: #ff8f85;
+  --destructive-foreground: #3d1512;
+  --destructive-soft: #3d1512;
+  --success: #5fd3bb;
+  --success-soft: #0a2a24;
+  --warning: #f8ba3c;
+  --warning-soft: #382805;
+  --rating: #f8ba3c;
+  --tamurt-red: #ff4d5e;
 }
 
 @theme inline {
@@ -81,17 +95,25 @@
   --color-accent-soft: var(--accent-soft);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-destructive-soft: var(--destructive-soft);
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
   --color-warning: var(--warning);
   --color-warning-soft: var(--warning-soft);
+  --color-rating: var(--rating);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-vif: var(--brand-vif);
+  --color-brand-on: var(--brand-on);
+  /* Coins de la DA Transport : 8 px pour champs, puces et menus, 12 px pour les cartes. */
   --radius-sm: calc(var(--radius) - 6px);
-  --radius-md: calc(var(--radius) - 3px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 6px);
-  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display-face), var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: calc(var(--radius) - 4px);
+  --radius-xl: var(--radius);
+  --radius-2xl: calc(var(--radius) + 4px);
+  /* Signika pour tout (titres, texte, boutons) ; Noto Sans prend le relais pour ɛ, ɣ et les autres lettres kabyles. */
+  --font-sans: var(--font-signika), var(--font-noto), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-signika), var(--font-noto), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -104,12 +126,10 @@
   body {
     background: var(--background);
     color: var(--foreground);
-    font-feature-settings: "ss01", "cv11";
   }
   h1, h2, h3 {
     font-family: var(--font-display);
     text-wrap: balance;
-    letter-spacing: -0.02em;
   }
   :focus-visible {
     outline: 2px solid var(--ring);
@@ -132,4 +152,39 @@
 
 @utility tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Bouton « flèche » de Tamurt Transport : le fond vit dans ::before pour être découpé
+ * en flèche (le sens du voyage) sans rogner l'anneau de focus du bouton.
+ * La couleur vient de --fleche-bg, posée par les variantes de components/ui/button.tsx.
+ */
+@layer components {
+  .btn-fleche {
+    position: relative;
+    isolation: isolate;
+  }
+  .btn-fleche::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 10px 0 0 10px;
+    background-color: var(--fleche-bg);
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+    transition: background-color 150ms;
+  }
+  /* Bouton carré (icône seule) : pas de pointe. */
+  .btn-carre::before {
+    border-radius: var(--radius-md);
+    clip-path: none;
+  }
+}
+
+/* Frise Transport « pointillés et flèche » : la ligne d'un trajet et le sens du voyage. Décorative, 12 px. */
+@utility frise {
+  height: 12px;
+  background-color: var(--primary);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 12%22 width=%2232%22 height=%2212%22 fill=%22%23000%22%3E%3Cpath d=%22M1 4.8h7v2.4H1zM11 4.8h7v2.4h-7z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.4%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 d=%22M22.5 2 27 6l-4.5 4%22/%3E%3C/svg%3E") left center / auto 100% repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 12%22 width=%2232%22 height=%2212%22 fill=%22%23000%22%3E%3Cpath d=%22M1 4.8h7v2.4H1zM11 4.8h7v2.4h-7z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.4%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 d=%22M22.5 2 27 6l-4.5 4%22/%3E%3C/svg%3E") left center / auto 100% repeat-x;
 }

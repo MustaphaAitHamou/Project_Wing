@@ -87,7 +87,7 @@ export function ChatThread({ conv }: { conv: Conv }) {
       </header>
 
       <div className="flex-1 overflow-y-auto p-4" aria-live="polite" aria-label="Messages">
-        <p className="mx-auto mb-4 max-w-md rounded-lg bg-muted px-3 py-2 text-center text-xs text-muted-foreground">Restez sur Tamurt Sending pour vos échanges et paiements. Ne partagez jamais vos codes de confirmation par message.</p>
+        <p className="mx-auto mb-4 max-w-md rounded-lg bg-muted px-3 py-2 text-center text-xs text-muted-foreground">Restez sur Tamurt Transport pour vos échanges et paiements. Ne partagez jamais vos codes de confirmation par message.</p>
         <ul className="grid gap-2">
           {conv.messages.map((m) => (
             <li key={m.id} className={cn("flex", m.mine ? "justify-end" : "justify-start")}>

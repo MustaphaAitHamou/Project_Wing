@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { ProsePage, TODO } from "@/components/marketplace/prose";
 
-export const metadata: Metadata = { title: "À propos", description: "Tamurt Sending, une plateforme de Tamurt Services.", alternates: { canonical: "/a-propos" } };
+export const metadata: Metadata = { title: "À propos", description: "Tamurt Transport, une plateforme de Tamurt Services.", alternates: { canonical: "/a-propos" } };
 
 export default function AboutPage() {
   return (
-    <ProsePage title="À propos de Tamurt Sending" intro="« Tamurt » signifie « le pays » en kabyle. Tamurt Sending est née d'un constat simple : chaque semaine, des milliers de personnes voyagent entre la France et l'Algérie avec de la place dans leurs bagages, pendant que d'autres cherchent à faire parvenir un colis à leurs proches.">
-      <p>Tamurt Sending est une plateforme éditée par Tamurt Services. Elle met en relation expéditeurs et voyageurs, sécurise le paiement et chaque étape de la remise, et accompagne les utilisateurs en cas de problème.</p>
+    <ProsePage title="À propos de Tamurt Transport" intro="« Tamurt » signifie « le pays » en kabyle. Tamurt Transport est née d'un constat simple : chaque semaine, des milliers de personnes voyagent entre la France et l'Algérie avec de la place dans leurs bagages, pendant que d'autres cherchent à faire parvenir un colis à leurs proches.">
+      <p>Tamurt Transport est une plateforme éditée par Tamurt Services. Elle met en relation expéditeurs et voyageurs, sécurise le paiement et chaque étape de la remise, et accompagne les utilisateurs en cas de problème.</p>
       <h2>Nos principes</h2>
       <ul>
         <li><strong>Transparence</strong> : prix et commission affichés avant tout engagement, aucune promesse que nous ne pouvons pas tenir.</li>

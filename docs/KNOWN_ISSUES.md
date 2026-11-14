@@ -36,3 +36,10 @@ Ce fichier liste honnêtement ce qui n'est pas fait, simulé ou incomplet.
 - Un seul devise (EUR) pour les transactions.
 - Performance Lighthouse mobile : 83 sur l'accueil et la connexion (objectif 90 non atteint), 92 sur la recherche ; mesure locale à refaire en préproduction (voir PROGRESS.md).
 - `next dev` recharge la page à la première compilation d'une route : les E2E tournent donc sur un build de production.
+
+## Identité visuelle (passage à Tamurt Transport)
+- **Bouton yaz masqué** tant que `TAMURT_SERVICES_URL` est vide : le site Tamurt Services n'est pas encore en ligne.
+- **Contenus déjà en base** : le seed n'insère la FAQ que si la table est vide. Une base existante garde donc les réponses qui citent « Tamurt Sending » ; il faut les corriger depuis /admin (FAQ). Les nouvelles bases reçoivent le bon nom.
+- **Double authentification** : les applications TOTP déjà configurées affichent encore « Tamurt Sending ». L'émetteur n'est lu qu'à l'enrôlement ; les codes restent valides.
+- **Lighthouse** : les scores du 29/10/2026 datent d'avant le passage à Signika. Ils sont à re-mesurer.
+

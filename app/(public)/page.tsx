@@ -33,13 +33,13 @@ export default async function HomePage() {
     db.review.findMany({ where: { status: "VISIBLE", rating: { gte: 4 }, comment: { not: null } }, orderBy: { createdAt: "desc" }, take: 3, include: { author: { select: { firstName: true } } } }),
     db.faqItem.findMany({ where: { isPublished: true }, orderBy: { sortOrder: "asc" }, take: 5 }),
   ]);
-  const jsonLd = { "@context": "https://schema.org", "@type": "Organization", name: "Tamurt Sending", parentOrganization: { "@type": "Organization", name: "Tamurt Services" }, url: process.env.APP_URL };
+  const jsonLd = { "@context": "https://schema.org", "@type": "Organization", name: "Tamurt Transport", parentOrganization: { "@type": "Organization", name: "Tamurt Services" }, url: process.env.APP_URL };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       {/* Hero */}
-      <section className="relative overflow-hidden border-b bg-[radial-gradient(60rem_30rem_at_80%_-10%,var(--primary-soft),transparent)]">
+      <section className="relative overflow-hidden bg-[radial-gradient(60rem_30rem_at_80%_-10%,var(--primary-soft),transparent)]">
         <div className="container-page grid items-center gap-10 py-12 md:py-16 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="grid gap-7">
             <div className="grid gap-4">
@@ -48,7 +48,7 @@ export default async function HomePage() {
                 Envoyez vos colis grâce aux voyageurs qui font <span className="text-primary">déjà le trajet</span>.
               </h1>
               <p className="max-w-xl text-lg text-muted-foreground">
-                Tamurt Sending connecte les expéditeurs et les voyageurs pour faciliter l&apos;envoi de colis entre la France et l&apos;Algérie.
+                Tamurt Transport connecte les expéditeurs et les voyageurs pour faciliter l&apos;envoi de colis entre la France et l&apos;Algérie.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -62,12 +62,14 @@ export default async function HomePage() {
           <SearchForm />
         </div>
       </section>
+      {/* Frise Transport : la ligne du trajet, sous le bandeau d'accueil (une par écran). */}
+      <div className="frise" aria-hidden />
 
       {/* Comment ça marche */}
       <section className="container-page py-16 md:py-20" aria-labelledby="how">
         <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div className="grid gap-2">
-            <h2 id="how" className="text-3xl font-bold">Comment fonctionne Tamurt Sending</h2>
+            <h2 id="how" className="text-3xl font-bold">Comment fonctionne Tamurt Transport</h2>
             <p className="max-w-xl text-muted-foreground">Quatre étapes, du dépôt de l&apos;annonce à la livraison confirmée.</p>
           </div>
           <Button asChild variant="link"><Link href="/comment-ca-marche">Tout comprendre<ArrowRight /></Link></Button>
@@ -131,7 +133,7 @@ export default async function HomePage() {
       {/* Pourquoi */}
       <section className="border-y bg-primary-soft/50 py-16" aria-labelledby="why">
         <div className="container-page grid gap-10">
-          <h2 id="why" className="text-2xl font-bold sm:text-3xl">Pourquoi choisir Tamurt Sending</h2>
+          <h2 id="why" className="text-2xl font-bold sm:text-3xl">Pourquoi choisir Tamurt Transport</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {reasons.map((r) => (
               <div key={r.title} className="grid content-start gap-2">
@@ -173,7 +175,7 @@ export default async function HomePage() {
       {/* Avis authentiques */}
       {reviews.length > 0 && (
         <section className="container-page grid gap-6 pb-16" aria-labelledby="reviews">
-          <h2 id="reviews" className="text-2xl font-bold sm:text-3xl">Ils ont utilisé Tamurt Sending</h2>
+          <h2 id="reviews" className="text-2xl font-bold sm:text-3xl">Ils ont utilisé Tamurt Transport</h2>
           <div className="grid gap-4 md:grid-cols-3">
             {reviews.map((r) => (
               <figure key={r.id} className="grid gap-3 rounded-xl border bg-card p-5">
@@ -197,12 +199,13 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section className="container-page">
-        <div className="grid gap-6 rounded-2xl bg-primary px-6 py-10 text-primary-foreground md:grid-cols-[1fr_auto] md:items-center md:px-10">
+        {/* Bandeau de marque, identique dans les deux thèmes : du sarcelle profond au sarcelle de l'app, texte blanc ≥ 5,2:1. */}
+        <div className="grid gap-6 rounded-2xl bg-[linear-gradient(57deg,var(--brand-deep),#0c7a70)] px-6 py-10 text-brand-on md:grid-cols-[1fr_auto] md:items-center md:px-10">
           <div className="grid gap-2">
             <h2 className="text-2xl font-bold sm:text-3xl">Un seul compte pour envoyer et transporter</h2>
-            <p className="opacity-90">L&apos;inscription est gratuite. Vous ne payez qu&apos;une fois un voyageur choisi.</p>
+            <p>L&apos;inscription est gratuite. Vous ne payez qu&apos;une fois un voyageur choisi.</p>
           </div>
-          <Button asChild size="lg" variant="accent"><Link href="/inscription">Créer mon compte</Link></Button>
+          <Button asChild size="lg" variant="inverse"><Link href="/inscription">Créer mon compte</Link></Button>
         </div>
       </section>
     </>

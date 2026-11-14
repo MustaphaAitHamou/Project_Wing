@@ -33,7 +33,7 @@ export default async function DisputePage({ params }: { params: Promise<{ id: st
             <ol className="grid gap-3">
               {d.events.map((e) => (
                 <li key={e.id} className="rounded-xl border p-3 text-sm">
-                  <p className="text-xs text-muted-foreground">{e.actorId ? names.get(e.actorId) ?? "Équipe Tamurt Sending" : "Système"} · {formatDateTime(e.createdAt)}{e.type === "evidence_added" ? " · pièce ajoutée" : ""}</p>
+                  <p className="text-xs text-muted-foreground">{e.actorId ? names.get(e.actorId) ?? "Équipe Tamurt Transport" : "Système"} · {formatDateTime(e.createdAt)}{e.type === "evidence_added" ? " · pièce ajoutée" : ""}</p>
                   {e.note && <p className="mt-1 whitespace-pre-wrap">{e.note}</p>}
                 </li>
               ))}

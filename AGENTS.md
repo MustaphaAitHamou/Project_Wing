@@ -1,9 +1,9 @@
-# AGENTS.md : Tamurt Sending
+# AGENTS.md : Tamurt Transport
 
 Contexte permanent pour les agents de développement. À lire avant toute modification.
 
 ## Projet
-Tamurt Sending (Tamurt Services) est une marketplace de crowdshipping : des expéditeurs publient des colis, des voyageurs publient leurs trajets, la plateforme les met en relation, sécurise le paiement (prestataire externe) et la remise / livraison par codes OTP. Marché initial France ⇄ Algérie (Kabylie). Langue : français.
+Tamurt Transport (Tamurt Services) est une marketplace de crowdshipping : des expéditeurs publient des colis, des voyageurs publient leurs trajets, la plateforme les met en relation, sécurise le paiement (prestataire externe) et la remise / livraison par codes OTP. Marché initial France ⇄ Algérie (Kabylie). Langue : français.
 
 ## Stack
 - Next.js 16 (App Router, Turbopack), React 19, TypeScript strict, Tailwind CSS 4, composants maison façon shadcn (Radix), Lucide.

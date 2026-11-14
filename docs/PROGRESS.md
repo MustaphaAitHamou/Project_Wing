@@ -1,6 +1,6 @@
 # Avancement
 
-Dernière mise à jour : 29/10/2026.
+Dernière mise à jour : 14/11/2026.
 
 | Phase | État | Détail |
 |---|---|---|
@@ -13,14 +13,15 @@ Dernière mise à jour : 29/10/2026.
 | 7. Paiements | ✔ (sandbox) | Stripe Checkout/Connect/Identity écrits ; simulateur testé ; commission, remboursements, versements, blocages. Aucun paiement réel. |
 | 8. Administration | ✔ | Dashboard, utilisateurs, annonces, réservations, paiements, litiges, signalements, configuration, FAQ, audit, CSV. |
 | 9. Qualité et sécurité | ✔ | Voir « Tests » ci-dessous ; audit des dépendances propre. |
+| Identité visuelle | ✔ | Renommage en Tamurt Transport, DA Tamurt Services : couleurs, Signika, boutons flèche, logos et icônes, frise, bouton yaz (ADR-015). |
 | 10. Préparation production | Partiel | Documentation, CI, checklist ✔ ; Sentry, mesures Lighthouse en préproduction, déploiement : à faire par le propriétaire. |
 
-## Tests (dernier passage, 29/10/2026)
+## Tests (dernier passage, 14/11/2026)
 | Suite | Résultat |
 |---|---|
 | Unitaires (Vitest) : commissions, montants, machine à états, matching, OTP, normalisation, schémas, saisies numériques, redirections, configuration | 45/45 ✔ |
 | Intégration (Vitest + PostgreSQL) : cycle complet, IDOR, OTP, webhooks, double paiement, concurrence, capacité, KYC, catégories, corridors, annulation/remboursement, litige | 32/32 ✔ |
-| E2E (Playwright, build de production) : scénarios A, B, C, D + interface (saisies numériques, filtres, boutons, notifications, mobile sans débordement) | 32/32 ✔ |
+| E2E (Playwright, build de production) : scénarios A, B, C, D + interface (saisies numériques, filtres, boutons, notifications, mobile sans débordement) | 33/33 ✔ |
 | TypeScript strict | 0 erreur |
 | ESLint | 0 erreur, 3 avertissements (bibliothèque React Hook Form non optimisable par le compilateur React, navigation Better Auth) |
 | `pnpm audit` | aucune vulnérabilité |

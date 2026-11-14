@@ -3,11 +3,11 @@ import Link from "next/link";
 import { ProsePage } from "@/components/marketplace/prose";
 import { Button } from "@/components/ui/button";
 
-export const metadata: Metadata = { title: "Comment ça marche", description: "Le fonctionnement de Tamurt Sending pour les expéditeurs et les voyageurs, étape par étape.", alternates: { canonical: "/comment-ca-marche" } };
+export const metadata: Metadata = { title: "Comment ça marche", description: "Le fonctionnement de Tamurt Transport pour les expéditeurs et les voyageurs, étape par étape.", alternates: { canonical: "/comment-ca-marche" } };
 
 export default function HowItWorksPage() {
   return (
-    <ProsePage title="Comment ça marche" intro="Tamurt Sending met en relation des personnes qui veulent envoyer un colis et des voyageurs qui font déjà le trajet. Un seul compte permet d'être expéditeur et voyageur.">
+    <ProsePage title="Comment ça marche" intro="Tamurt Transport met en relation des personnes qui veulent envoyer un colis et des voyageurs qui font déjà le trajet. Un seul compte permet d'être expéditeur et voyageur.">
       <h2>Pour les expéditeurs</h2>
       <ol>
         <li><strong>Publiez votre colis</strong> : villes de départ et d&apos;arrivée, date souhaitée, poids, dimensions, contenu précis, valeur déclarée, photos et budget. Les coordonnées du destinataire restent privées.</li>

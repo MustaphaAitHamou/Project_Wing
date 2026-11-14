@@ -20,7 +20,7 @@ const schema = z
 
     EMAIL_PROVIDER: z.enum(["outbox", "resend"]).default("outbox"),
     RESEND_API_KEY: z.string().optional(),
-    EMAIL_FROM: z.string().default("Tamurt Sending <no-reply@localhost>"),
+    EMAIL_FROM: z.string().default("Tamurt Transport <no-reply@localhost>"),
 
     SMS_PROVIDER: z.enum(["none", "twilio"]).default("none"),
     TWILIO_ACCOUNT_SID: z.string().optional(),
@@ -43,6 +43,9 @@ const schema = z
     S3_SECRET_ACCESS_KEY: z.string().optional(),
 
     SENTRY_DSN: z.string().optional(),
+
+    /** Adresse de Tamurt Services (la maison mère) : active le bouton yaz en haut à droite. */
+    TAMURT_SERVICES_URL: z.string().url().or(z.literal("")).optional(),
   })
   .superRefine((v, ctx) => {
     const req = (cond: boolean, keys: string[], why: string) => {

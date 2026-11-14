@@ -13,8 +13,8 @@ export default function PrivacyPage() {
         <li><strong>Compte</strong> : nom, prénom, email, téléphone, pays, mot de passe (haché). Finalité : gestion du compte, sécurité. Base : exécution du contrat.</li>
         <li><strong>Annonces et réservations</strong> : trajets, colis, photos, destinataire (nom, téléphone, email facultatif, ville). Finalité : mise en relation et exécution du transport.</li>
         <li><strong>Messagerie</strong> : messages et pièces jointes, accessibles aux seuls participants ; accès de la modération uniquement sur signalement ou litige, journalisé.</li>
-        <li><strong>Vérification d&apos;identité</strong> : réalisée par le prestataire (Stripe Identity). Tamurt Sending ne conserve que le statut et la référence de vérification.</li>
-        <li><strong>Paiement</strong> : traité par le prestataire de paiement (Stripe). Tamurt Sending ne voit ni ne stocke les numéros de carte.</li>
+        <li><strong>Vérification d&apos;identité</strong> : réalisée par le prestataire (Stripe Identity). Tamurt Transport ne conserve que le statut et la référence de vérification.</li>
+        <li><strong>Paiement</strong> : traité par le prestataire de paiement (Stripe). Tamurt Transport ne voit ni ne stocke les numéros de carte.</li>
         <li><strong>Journaux techniques et de sécurité</strong> : adresse IP, appareil, actions sensibles. Finalité : sécurité, prévention de la fraude. Base : intérêt légitime.</li>
       </ul>
       <h2>Destinataires et sous-traitants</h2>

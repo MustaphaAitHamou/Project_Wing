@@ -3,7 +3,7 @@ import { layout, type RenderedEmail } from "./layout";
 export const templates = {
   verifyEmail: (d: { name: string; url: string }): RenderedEmail => ({
     subject: "Confirmez votre adresse email",
-    ...layout({ title: `Bienvenue ${d.name}`, preheader: "Confirmez votre email pour activer votre compte.", paragraphs: ["Confirmez votre adresse email pour activer votre compte Tamurt Sending. Ce lien expire dans 24 heures."], cta: { label: "Confirmer mon email", url: d.url } }),
+    ...layout({ title: `Bienvenue ${d.name}`, preheader: "Confirmez votre email pour activer votre compte.", paragraphs: ["Confirmez votre adresse email pour activer votre compte Tamurt Transport. Ce lien expire dans 24 heures."], cta: { label: "Confirmer mon email", url: d.url } }),
   }),
   resetPassword: (d: { name: string; url: string }): RenderedEmail => ({
     subject: "Réinitialisation de votre mot de passe",
@@ -15,11 +15,11 @@ export const templates = {
   }),
   deliveryCode: (d: { name: string; reference: string; code: string; expiresAt: string; url?: string }): RenderedEmail => ({
     subject: `Code de réception du colis ${d.reference}`,
-    ...layout({ title: "Votre colis arrive", preheader: "Code à donner au voyageur à la réception du colis.", paragraphs: [`Bonjour ${d.name}, un colis Tamurt Sending vous est destiné (réservation ${d.reference}).`, `Donnez ce code au voyageur uniquement après avoir reçu et vérifié le colis. Il expire le ${d.expiresAt}.`], code: d.code }),
+    ...layout({ title: "Votre colis arrive", preheader: "Code à donner au voyageur à la réception du colis.", paragraphs: [`Bonjour ${d.name}, un colis Tamurt Transport vous est destiné (réservation ${d.reference}).`, `Donnez ce code au voyageur uniquement après avoir reçu et vérifié le colis. Il expire le ${d.expiresAt}.`], code: d.code }),
   }),
   notification: (d: { name: string; title: string; body: string; url?: string }): RenderedEmail => ({
     subject: d.title,
-    ...layout({ title: d.title, preheader: d.body, paragraphs: [`Bonjour ${d.name},`, d.body], cta: d.url ? { label: "Ouvrir Tamurt Sending", url: d.url } : undefined, footer: "Vous pouvez gérer vos préférences de notification dans Paramètres > Notifications." }),
+    ...layout({ title: d.title, preheader: d.body, paragraphs: [`Bonjour ${d.name},`, d.body], cta: d.url ? { label: "Ouvrir Tamurt Transport", url: d.url } : undefined, footer: "Vous pouvez gérer vos préférences de notification dans Paramètres > Notifications." }),
   }),
   contact: (d: { name: string; email: string; subject: string; message: string }): RenderedEmail => ({
     subject: `[Contact] ${d.subject}`,

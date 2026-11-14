@@ -1,4 +1,4 @@
-# Spécification produit — Tamurt Sending
+# Spécification produit — Tamurt Transport
 
 ## Vision
 Marketplace de livraison collaborative (crowdshipping) : des expéditeurs confient des colis à des voyageurs qui font déjà le trajet. Marché initial : France ⇄ Algérie, Kabylie en priorité. Éditeur : Tamurt Services.
@@ -8,7 +8,7 @@ DimHum (dimhum.com) a servi de référence concurrentielle. **Le site n'a pas pu
 - communiqué de lancement (digitaljournal.com, 2025) : mise en relation expéditeurs/voyageurs déjà en route, vérification d'identité via Plaid, paiement via Stripe ;
 - fiche App Store (apps.apple.com/app/dimhum/id6744582676) : usage personnel uniquement, petits objets légaux, mises à jour de livraison, confirmation de livraison par OTP ; corridor États-Unis ⇄ Bangladesh.
 
-Tout le reste (parcours détaillés, double OTP remise + livraison, matching scoré, litiges, administration) est une **conception propre à Tamurt Sending**, inspirée des principes ergonomiques d'Airbnb (recherche), BlaBlaCar (mise en relation), Vinted (simplicité de transaction) et Cocolis (univers du colis), sans reprise d'interface, de texte ni d'identité visuelle.
+Tout le reste (parcours détaillés, double OTP remise + livraison, matching scoré, litiges, administration) est une **conception propre à Tamurt Transport**, inspirée des principes ergonomiques d'Airbnb (recherche), BlaBlaCar (mise en relation), Vinted (simplicité de transaction) et Cocolis (univers du colis), sans reprise d'interface, de texte ni d'identité visuelle.
 
 ## Personas
 - **Expéditeur** : particulier de la diaspora (Marseille, Lyon, Paris…) qui veut envoyer vêtements, cadeaux, livres à sa famille en Kabylie ; sensible au prix, à la confiance et au suivi.

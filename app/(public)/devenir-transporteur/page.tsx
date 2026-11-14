@@ -23,7 +23,7 @@ export default function TravelerPage() {
         <li>Ne jamais transporter un colis fermé dont vous ignorez le contenu.</li>
       </ul>
       <h2>Rémunération</h2>
-      <p>Vous fixez votre prix. Tamurt Sending prélève une commission (voir <Link href="/tarifs">Tarifs</Link>). Les versements vers certains pays, dont l&apos;Algérie, ne sont pas encore disponibles : votre tableau de bord l&apos;indique avant tout engagement.</p>
+      <p>Vous fixez votre prix. Tamurt Transport prélève une commission (voir <Link href="/tarifs">Tarifs</Link>). Les versements vers certains pays, dont l&apos;Algérie, ne sont pas encore disponibles : votre tableau de bord l&apos;indique avant tout engagement.</p>
       <p className="text-sm text-muted-foreground">Le statut fiscal et réglementaire des voyageurs rémunérés dépend de votre situation et de votre pays de résidence. Renseignez-vous sur vos obligations déclaratives.</p>
       <div className="flex flex-wrap gap-3 pt-4"><Button asChild size="lg"><Link href="/tableau-de-bord/trajets/nouveau">Publier mon trajet</Link></Button><Button asChild size="lg" variant="outline"><Link href="/colis">Voir les colis à transporter</Link></Button></div>
     </ProsePage>

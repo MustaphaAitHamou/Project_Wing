@@ -1,4 +1,4 @@
-// Tamurt Sending — schéma de données
+// Tamurt Transport — schéma de données
 // Conventions :
 // - Montants en unités mineures (centimes) dans des Int : exacts, jamais de flottants.
 // - Poids en grammes, volumes en cm³, dimensions en cm (Int).

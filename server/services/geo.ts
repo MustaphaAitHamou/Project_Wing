@@ -59,7 +59,7 @@ export async function assertCorridorOpen(originCountry: string, destCountry: str
   const c = await db.corridor.findUnique({ where: { originCountry_destCountry: { originCountry, destCountry } } });
   const allowTest = isTestMode();
   if (!c || c.status === "DISABLED" || (c.status === "TEST_ONLY" && !allowTest))
-    throw unavailable("Ce trajet entre ces deux pays n'est pas encore ouvert sur Tamurt Sending.");
+    throw unavailable("Ce trajet entre ces deux pays n'est pas encore ouvert sur Tamurt Transport.");
   if (mode && c.allowedModes.length > 0 && !c.allowedModes.includes(mode))
     throw invalid("Ce moyen de transport n'est pas autorisé sur ce trajet.");
   return c;

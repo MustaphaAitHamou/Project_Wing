@@ -8,7 +8,7 @@ import { conflict, notFound } from "@/server/security/errors";
 import type { KycStatus } from "@/generated/prisma/client";
 
 /**
- * Vérification d'identité déléguée à un prestataire. Tamurt Sending ne reçoit
+ * Vérification d'identité déléguée à un prestataire. Tamurt Transport ne reçoit
  * ni ne stocke aucun scan de document : seulement le statut et la référence de session.
  *
  * - stripe_identity : Stripe Identity (session hébergée par Stripe).

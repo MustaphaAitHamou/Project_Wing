@@ -6,7 +6,7 @@ import { SignUpForm } from "@/features/auth/sign-up-form";
 import { getCurrentUser } from "@/server/auth/session";
 import { env } from "@/lib/env";
 
-export const metadata: Metadata = { title: "Créer un compte", description: "Inscription gratuite à Tamurt Sending pour envoyer ou transporter des colis." };
+export const metadata: Metadata = { title: "Créer un compte", description: "Inscription gratuite à Tamurt Transport pour envoyer ou transporter des colis." };
 
 export default async function SignUpPage() {
   if (await getCurrentUser()) redirect("/tableau-de-bord");

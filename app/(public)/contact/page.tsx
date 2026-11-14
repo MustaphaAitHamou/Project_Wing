@@ -3,7 +3,7 @@ import { ProsePage } from "@/components/marketplace/prose";
 import { ContactForm } from "@/features/contact/contact-form";
 import { getCurrentUser } from "@/server/auth/session";
 
-export const metadata: Metadata = { title: "Contact", description: "Contactez l'équipe Tamurt Sending.", alternates: { canonical: "/contact" } };
+export const metadata: Metadata = { title: "Contact", description: "Contactez l'équipe Tamurt Transport.", alternates: { canonical: "/contact" } };
 
 export default async function ContactPage() {
   const user = await getCurrentUser();

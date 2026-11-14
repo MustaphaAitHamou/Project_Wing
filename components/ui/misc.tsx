@@ -71,7 +71,7 @@ export function Stars({ value, count, className }: { value: number | null; count
   if (!value) return <span className={cn("text-xs text-muted-foreground", className)}>Pas encore d&apos;avis</span>;
   return (
     <span className={cn("inline-flex items-center gap-1 text-sm", className)} aria-label={`Note ${value.toFixed(1)} sur 5${count ? `, ${count} avis` : ""}`}>
-      <svg viewBox="0 0 20 20" className="size-4 fill-accent" aria-hidden><path d="M10 1.5l2.6 5.5 6 .7-4.5 4.1 1.2 6-5.3-3-5.3 3 1.2-6L1.4 7.7l6-.7z" /></svg>
+      <svg viewBox="0 0 20 20" className="size-4 fill-rating" aria-hidden><path d="M10 1.5l2.6 5.5 6 .7-4.5 4.1 1.2 6-5.3-3-5.3 3 1.2-6L1.4 7.7l6-.7z" /></svg>
       <span className="font-semibold tabular">{value.toFixed(1)}</span>
       {count != null && <span className="text-muted-foreground">({count})</span>}
     </span>

@@ -48,7 +48,7 @@ export async function issueCode(bookingId: string, purpose: VerificationPurpose)
   }
   const r = b.parcel.recipient;
   if (r?.email) await sendEmail(r.email, "deliveryCode", { name: r.name, reference: b.reference, code, expiresAt: fmt(expiresAt) });
-  if (r?.phone && smsAvailable()) await sendSms(r.phone, `Tamurt Sending : code de réception ${code} (colis ${b.reference}). A donner au voyageur uniquement a la remise du colis.`);
+  if (r?.phone && smsAvailable()) await sendSms(r.phone, `Tamurt Transport : code de réception ${code} (colis ${b.reference}). A donner au voyageur uniquement a la remise du colis.`);
   if (!r?.email && !(r?.phone && smsAvailable())) {
     // Aucun canal direct vers le destinataire : l'expéditeur relaie le code au destinataire.
     await sendEmail(b.sender.email, "deliveryCode", { name: `${b.sender.firstName} (à transmettre à ${r?.name ?? "votre destinataire"})`, reference: b.reference, code, expiresAt: fmt(expiresAt) });

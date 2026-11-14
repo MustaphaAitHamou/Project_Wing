@@ -1,8 +1,15 @@
-# Tamurt Sending
+# Tamurt Transport
 
 Marketplace de livraison collaborative (crowdshipping) : envoyez vos colis grâce aux voyageurs qui font déjà le trajet entre la France et l'Algérie. Projet de **Tamurt Services**.
 
 > **État :** techniquement prêt pour une revue de lancement, **pas encore commercialement opérationnel**. Les paiements réels, la vérification d'identité réelle, l'envoi d'emails réels, le corridor France ⇄ Algérie et les pages légales attendent la configuration des prestataires et une validation juridique. Voir [docs/COMPLIANCE_CHECKLIST.md](docs/COMPLIANCE_CHECKLIST.md) et [docs/PRODUCTION_CHECKLIST.md](docs/PRODUCTION_CHECKLIST.md).
+
+## Identité visuelle
+Tamurt Transport suit la DA de la famille **Tamurt Services** (slogan : « De main en main, jusqu’au pays ») :
+- **Couleur** : sarcelle « de la traversée » (`#0c7a70`, `#5fd6c8` en sombre) sur les neutres chauds communs à la famille ; le rouge Tamurt est réservé au bouton yaz.
+- **Police** : Signika pour tout, avec Noto Sans en relais pour les lettres kabyles (ɛ, ɣ…).
+- **Formes** : boutons pleins en flèche, coins de 8 px (champs, puces) et 12 px (cartes), frise « pointillés et flèche » sous l'accueil.
+- **Fichiers** : logos et icônes dans `public/brand` et `public/icons` ; jetons dans `app/globals.css`. Décision : ADR-015 (docs/DECISIONS.md).
 
 ## Fonctionnalités
 - Comptes uniques expéditeur + voyageur : email vérifié, mot de passe, Google (option), double authentification, vérification d'identité (Stripe Identity).

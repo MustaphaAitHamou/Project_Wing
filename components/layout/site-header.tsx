@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { TamurtYaz } from "@/components/brand/tamurt-yaz";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser, isStaff } from "@/server/auth/session";
 import { unreadCount } from "@/server/services/notifications";
@@ -17,7 +18,7 @@ export async function SiteHeader() {
       <SiteBanner />
       <header className="sticky top-0 z-40 border-b bg-background/85 pt-[env(safe-area-inset-top)] backdrop-blur-md supports-[backdrop-filter]:bg-background/70">
         <div className="container-page flex h-16 items-center gap-4">
-          <Link href="/" aria-label="Tamurt Sending, accueil" className="shrink-0">
+          <Link href="/" aria-label="Tamurt Transport, accueil" className="shrink-0">
             <Logo />
           </Link>
           <nav className="ml-6 hidden items-center gap-1 lg:flex" aria-label="Navigation principale">
@@ -41,6 +42,7 @@ export async function SiteHeader() {
               </>
             )}
             <MobileNav signedIn={!!user} />
+            <TamurtYaz />
           </div>
         </div>
       </header>

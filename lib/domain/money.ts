@@ -8,7 +8,7 @@ export type FeeModel = "TRAVELER_DEDUCTION" | "SENDER_SURCHARGE";
 export interface FeeBreakdown {
   /** Prix du transport convenu entre les parties. */
   transportPrice: number;
-  /** Commission Tamurt Sending. */
+  /** Commission Tamurt Transport. */
   platformFee: number;
   /** Montant net estimé pour le transporteur (avant éventuels frais du prestataire de paiement). */
   travelerNet: number;

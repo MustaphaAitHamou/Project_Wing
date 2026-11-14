@@ -11,7 +11,7 @@ import { enqueue } from "@/server/jobs/queue";
 import { signUpServerSchema } from "@/features/auth/schemas";
 
 export const auth = betterAuth({
-  appName: "Tamurt Sending",
+  appName: "Tamurt Transport",
   baseURL: env.BETTER_AUTH_URL ?? env.APP_URL,
   secret: env.BETTER_AUTH_SECRET,
   database: prismaAdapter(db, { provider: "postgresql" }),
@@ -108,7 +108,7 @@ export const auth = betterAuth({
       },
     },
   },
-  plugins: [twoFactor({ issuer: "Tamurt Sending" }), nextCookies()],
+  plugins: [twoFactor({ issuer: "Tamurt Transport" }), nextCookies()],
 });
 
 export type AuthSession = typeof auth.$Infer.Session;

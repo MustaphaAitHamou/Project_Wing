@@ -4,14 +4,14 @@ import { env } from "@/lib/env";
 import type { PaymentProvider } from "./types";
 
 let client: Stripe | null = null;
-const stripe = () => (client ??= new Stripe(env.STRIPE_SECRET_KEY!, { appInfo: { name: "Tamurt Sending" } }));
+const stripe = () => (client ??= new Stripe(env.STRIPE_SECRET_KEY!, { appInfo: { name: "Tamurt Transport" } }));
 
 /**
  * Stripe Connect, modèle « charges et transferts séparés » :
  * - l'expéditeur paie via Stripe Checkout sur le compte plateforme ;
  * - après livraison confirmée, un Transfer est émis vers le compte connecté (Express)
  *   du transporteur, lié à la charge d'origine (source_transaction).
- * Les fonds restent chez Stripe : Tamurt Sending ne détient jamais l'argent elle-même.
+ * Les fonds restent chez Stripe : Tamurt Transport ne détient jamais l'argent elle-même.
  * La disponibilité des transferts dépend du pays du compte connecté (voir docs/PAYMENTS.md).
  */
 export const stripeProvider: PaymentProvider = {

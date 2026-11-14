@@ -13,7 +13,7 @@ export default async function WelcomePage({ searchParams }: { searchParams: Prom
   if (!user) redirect("/connexion");
   if (user.termsAccepted) redirect(safeNext(next));
   return (
-    <AuthCard title={`Bienvenue ${user.firstName || ""}`.trim()} description="Encore une étape avant d'utiliser Tamurt Sending.">
+    <AuthCard title={`Bienvenue ${user.firstName || ""}`.trim()} description="Encore une étape avant d'utiliser Tamurt Transport.">
       <OnboardingForm next={safeNext(next)} />
     </AuthCard>
   );
